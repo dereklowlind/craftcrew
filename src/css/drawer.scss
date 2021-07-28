@@ -1,0 +1,31 @@
+.drawerHeader {
+    margin-left: 40px;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.drawerTitle {
+    font-family: 'Rubik';
+    font-weight: 700;
+    font-size: 36px;
+    background: -webkit-linear-gradient(#FF4F4F, #4F99FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+}
+
+.drawerContent {
+    margin-left: 40px;
+    margin-top: 40px;
+    text-align: left;
+}
+
+.signInPrompt {
+    color: blue;
+    transition: color 0.2s;
+}
+
+.signInPrompt:hover {
+    color: #4F99FF;
+    cursor: pointer;
+}

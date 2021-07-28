@@ -1,0 +1,62 @@
+$theFont: 'Rubik';
+
+
+.searchResultContainer {
+    margin: auto;
+    width: 80%;
+    min-height: 100px;
+    padding: 20px;
+
+}
+
+.searchResult {
+    border-radius: 10px;
+    height: 70px;
+    width: 250px;
+    margin: 10px;
+    padding-top: -5px;
+    border: solid #e6e6e66e 2px;
+    font-family: $theFont;
+    transition: 0.4s;
+    box-shadow: 2px 4.6px 9.6px rgba(0, 0, 0, 0.17);
+}
+
+.searchResult:hover {
+    background-color: #dedede;
+    transition: 0.4s;
+    margin-left: 15px;
+}
+
+.searchBoxContainer {
+    width: 100%;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.searchText {
+    margin-top: 10px;
+    color: black;
+    text-align: left;
+    margin-left: 15px;
+}
+
+.searchTerm {
+    font-weight: 600;
+    font-size: 23px;
+}
+
+.searchDescription {
+    font-size: 14pt;
+}
+
+@media screen and (max-width: 400px) {
+   .searchBoxContainer {
+       width: 60%;
+   } 
+   .searchResult {
+       margin: auto;
+       width: 80%;
+       height: 70px;
+   }
+}

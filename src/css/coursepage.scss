@@ -1,0 +1,82 @@
+$theFont: 'Rubik';
+
+.coursePage {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 100px;
+}
+
+.courseHeader {
+    text-align: left;
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.courseTitles {
+    display: inline-block;
+}
+
+.courseTitle {
+    font-family: $theFont;
+    font-weight: 700;
+    font-size: 32pt;
+    
+}
+
+.courseSubtitle {
+    font-family: $theFont;
+    font-weight: 600;
+    color: grey;
+    display: inline-block;
+}
+
+.courseButtons {
+    text-align: left;
+    margin-left: 25px;
+    margin-top: 25px;
+}
+
+.favouriteIndicator {
+   display: inline-block;
+   margin-left: 20px;
+   border-radius: 5px;
+   width: 35px;
+}
+
+.favouriteIndicator:hover {
+    cursor: pointer;
+}
+
+.loadingPage {
+    margin-top: 100px;
+}
+
+@media screen and (max-width: 600) {
+    .coursePage {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+    } 
+
+    .courseHeader {
+        text-align: center;
+        margin-left: -50px;
+        margin-top: 0;
+    }
+
+    .courseTitle {
+        font-family: $theFont;
+        font-weight: 700;
+        font-size: 32pt;
+    }
+ }
+
+ @media screen and (max-width: 900px) {
+    .coursePage {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+    } 
+ }
