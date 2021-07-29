@@ -7,20 +7,21 @@ import DrawerMenu from './molecules/DrawerMenu'
 import Helmet from 'react-helmet'
 import firebase from 'firebase'
 import 'firebase/firestore';
-import { useEffect, useState } from 'react'
-import ReactGA from 'react-ga';
+import { useEffect, useState, useCallback, useRef } from 'react'
+// import ReactGA from 'react-ga';
+import Webcam from "react-webcam";
 
 
 // Initialize Firebase
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyB_cIwxz8U3ZPZduCISW6K8eZW9Cree9o0",
-  authDomain: "test-lurndit.firebaseapp.com",
-  databaseURL: "https://test-lurndit.firebaseio.com",
-  projectId: "test-lurndit",
-  storageBucket: "test-lurndit.appspot.com",
-  messagingSenderId: "571339658382",
-  appId: "1:571339658382:web:6c18a6978988089f41e5df",
-  measurementId: "G-Z2K9NQHKSW"
+  apiKey: "AIzaSyCT_G8I6t642bWM-Jo6Yg7QZTPKjdNpygo",
+  authDomain: "testsocialbeer.firebaseapp.com",
+  projectId: "testsocialbeer",
+  storageBucket: "testsocialbeer.appspot.com",
+  messagingSenderId: "681727518625",
+  appId: "1:681727518625:web:febb3cd58dcfde77844de0",
+  measurementId: "G-GT3WQXSDMW"
 };
 
 if (!firebase.apps.length) {
@@ -28,11 +29,11 @@ if (!firebase.apps.length) {
 }
 
 const db = firebase.firestore();
-
+const storage = firebase.storage();
 
 function App() {
-  ReactGA.initialize('UA-177822253-1')
-  ReactGA.pageview(window.location.pathname + window.location.search)
+  // ReactGA.initialize('UA-177822253-1')
+  // ReactGA.pageview(window.location.pathname + window.location.search)
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [openSigninDialog, setOpenSigninDialog] = useState(false);
   const [favList, setFavList] = useState([]);
@@ -42,8 +43,9 @@ function App() {
   const [recentId, setRecentId] = useState("")
   const [routeTrigger, setRouteTrigger] = useState(false)
   const [courseListLoading, setCourseListLoading] = useState(true)
+  const [imgSrc, setImgSrc] = useState(null);
 
-
+  
   //on component mount
   useEffect(() => {
     db.collection("Lists").onSnapshot((dataEntries) => {
@@ -78,6 +80,16 @@ function App() {
 
   }
 
+  const webcamRef = useRef(null);
+  
+  const capture = useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setImgSrc(imageSrc);
+    storage.ref('images/testimage').putString(imageSrc, 'data_url').then((snapshot) => {
+      console.log('Uploaded image!');
+    });
+  }, [webcamRef, setImgSrc]);
+
   return (
     <div className="App">
       <Helmet>
@@ -96,6 +108,18 @@ function App() {
               <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>} /> 
               <Route path="/" render={(props) => (<Mainpage db={db} lists={lists} favList={favList} updateFavList={updateFavList} coursesLoading={courseListLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>
             </Switch>
+            <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+            />
+            <button onClick={capture}>Capture photo</button>
+            {imgSrc && (
+              <img
+                src={imgSrc}
+              />
+            )}
+
         </div>
       </Router>
     </div>
