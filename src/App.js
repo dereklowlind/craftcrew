@@ -93,7 +93,7 @@ function App() {
   return (
     <div className="App">
       <Helmet>
-        <title>Lurndit</title>
+        <title>Social beer</title>
         <link rel="preconnect" href="https://fonts.gstatic.com"/>
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
       </Helmet>
