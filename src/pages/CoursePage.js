@@ -162,6 +162,7 @@ function autoSave(db, topics, id) {
 
 function CoursePage(props){
     const db = props.db;
+    const [photoUrl, setPhotoUrl] = useState("");
     const [courseTitle, setCoursetitle] = useState("")
     const [courseSubtitle, setCourseSubtitle] = useState("")
     const [pageLoading, setLoading] = useState(true)
@@ -199,6 +200,9 @@ function CoursePage(props){
         const docData = doc.data()
         if (docData.title == undefined) {
           setDocError("notFound")
+        }
+        if(docData.photoUrl) {
+          setPhotoUrl(docData.photoUrl)
         }
         setCoursetitle(docData.title)
         setCourseOwner(docData.creatorId)
@@ -431,6 +435,7 @@ function CoursePage(props){
         :
         (
           <div className="coursePage">
+            <img src={photoUrl} />
             <div className="courseHeader">
               <div className="courseTitles">
                 <div className="courseTitle">

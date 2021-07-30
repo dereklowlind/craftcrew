@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import 'firebase/firestore'
 import firebase from 'firebase'
 import {Button, Dialog, DialogContent, DialogContentText, 
@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
 import {useAuthState} from 'react-firebase-hooks/auth'
 import '../css/mainpage.scss'
+import Webcam from "react-webcam";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -50,6 +51,7 @@ const errorMessages = [
 function Mainpage(props){
   const classes = useStyles();
   const db = props.db;
+  const storage = props.storage;
   let history = useHistory()
   //state
   //const [lists, setLists] = useState([]);
@@ -63,6 +65,8 @@ function Mainpage(props){
   const [dialogEmpty, setDialogEmpty] = useState([false, false, false, false])
   const [user, loading, error] = useAuthState(firebase.auth());
   // const [showMessages, setShowMessages] = useState([false, false, false, false])
+  const [imgSrc, setImgSrc] = useState(null);
+  
 
   //request functions
   const handleAdd = () => {
@@ -97,30 +101,45 @@ function Mainpage(props){
       setDialogEmpty(newEmpty)
       return
     }
+    const newListRef = db.collection("Lists").doc();
+    const photoPathRef = storage.ref(`publicImages/${newListRef.id}/mainPic.jpg`);
+    
 
-    db.collection("Lists").add({
-      datetime: new Date(),
-      title: courseCode,
-      university: university,
-      description: courseTitle,
-      subject: courseSubject,
-      creatorId: user.uid,
-      creatorName: user.displayName
-    })
-    .then(function() {
-      props.setRecentTitle(courseCode)
-      setCourseTitle("");
-      setCourseSubject("");
-      setUniversity("");
-      setCourseCode("");
-      setOpen(false)
-      setSubmitting(false)
-      props.setSubmitSuccess(true)
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-        setSubmitError(true)
-        setSubmitting(false)
+    // upload photo to firebase storage
+    photoPathRef.putString(imgSrc, 'data_url').then((snapshot) => {
+      // get the url reference to the photo
+      photoPathRef.getDownloadURL().then((url) =>{
+        console.log('Uploaded image to URL' + url);
+        console.log(newListRef.id);
+        console.log(url);
+        // upload data to firestore database
+        newListRef.set({
+          datetime: new Date(),
+          title: courseCode,
+          university: university,
+          description: courseTitle,
+          subject: courseSubject,
+          creatorId: user.uid,
+          creatorName: user.displayName,
+          photoUrl: url,
+        })
+        .then(function() {
+          props.setRecentTitle(courseCode)
+          setCourseTitle("");
+          setCourseSubject("");
+          setUniversity("");
+          setCourseCode("");
+          setImgSrc(null);
+          setOpen(false)
+          setSubmitting(false)
+          props.setSubmitSuccess(true)
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+            setSubmitError(true)
+            setSubmitting(false)
+        });
+      });
     });
   }
 
@@ -136,6 +155,17 @@ function Mainpage(props){
     closeSnack()
   }
 
+  const webcamRef = useRef(null);
+  
+  const capture = useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    setImgSrc(imageSrc);
+    // storage.ref('images/testimage').putString(imageSrc, 'data_url').then((snapshot) => {
+    //   console.log('Uploaded image!');
+    // });
+  }, [webcamRef, setImgSrc]);
+
+  
   //state sharing components seperated for clarity
   const courseDialog = (
     <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
@@ -144,6 +174,18 @@ function Mainpage(props){
         <DialogContentText>
           Please enter the new course below
         </DialogContentText>
+        <Webcam
+              audio={false}
+              ref={webcamRef}
+              screenshotFormat="image/jpeg"
+              videoConstraints={ {facingMode: "environment" }}
+            />
+            <button onClick={capture}>Capture photo</button>
+            {imgSrc && (
+              <img
+                src={imgSrc}
+              />
+            )}
         <TextField
           autoFocus
           margin="dense"
