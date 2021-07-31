@@ -169,10 +169,10 @@ function Mainpage(props){
   //state sharing components seperated for clarity
   const courseDialog = (
     <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Add Course</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Beer</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Please enter the new course below
+          Please enter the new beer below
         </DialogContentText>
         <Webcam
               audio={false}
@@ -187,14 +187,14 @@ function Mainpage(props){
               />
             )}
         <TextField
-          autoFocus
+          // autoFocus
           margin="dense"
           error={dialogEmpty[0]}
           id="code"
-          label="Course Code"
+          label="Brewery"
           fullWidth
           value={courseCode}
-          placeholder="eg. MATH101"
+          placeholder="eg. Philips"
           onChange={(e) => setCourseCode(e.target.value)}
         />
         {/* Should be autocomplete when we have a list of valid subjects */}
@@ -212,10 +212,10 @@ function Mainpage(props){
           margin="dense"
           id="title"
           error={dialogEmpty[2]}
-          label="Course Title"
+          label="Name of beer"
           fullWidth
           value={courseTitle}
-          placeholder="eg. Introductory Calculus"
+          placeholder="eg. Blue buck"
           onChange={(e) => setCourseTitle(e.target.value)}
         />
         {/* <TextField
@@ -278,7 +278,7 @@ function Mainpage(props){
           <div className="titleSection">
             <div className="pageTitleContainer">
               <h1 className="pageTitle">
-                Curated content that will help you study better.
+                Curated beer reviews. May the best beer win.
               </h1>
             </div>
           </div>
@@ -290,13 +290,13 @@ function Mainpage(props){
                   <Button className={classes.newCourseButton}
                   onClick={() => setOpen(true)}
                   >
-                    Add Course +
+                    Add New Beer +
                   </Button>
                   :
                   <Button className={classes.newCourseButton}
                   onClick={() => props.setOpenSigninDialog(true)}
                   >
-                    Add Course +
+                    Add New Beer +
                   </Button>
                 }
                 </div>

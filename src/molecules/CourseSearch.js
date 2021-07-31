@@ -104,7 +104,7 @@ function CourseSearch(props) {
                         }
                     }}
                     onChange={updateSearch} 
-                    placeholder="Search for courses..." type='text'/>
+                    placeholder="Search for beers..." type='text'/>
             </div>
             <div className="searchResultContainer">
                 {isEmpty ? 
