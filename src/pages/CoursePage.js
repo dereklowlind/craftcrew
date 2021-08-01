@@ -3,6 +3,7 @@ import firebase from 'firebase'
 import 'firebase/firestore';
 import {Button, TextField, Tooltip} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
+import Rating from '@material-ui/lab/Rating';
 import TopicList from '../molecules/TopicList'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-function newTopic(db, title, docId, numTopics, user){
+function newTopic(db, title, docId, numTopics, user, commentStars){
   console.log(numTopics)
     db.collection(`Lists/${docId}/topics`).add({
       datetime: new Date(),
@@ -43,7 +44,8 @@ function newTopic(db, title, docId, numTopics, user){
       resources: [],
       position: numTopics,
       creatorId: user.uid,
-      creatorName: user.displayName
+      creatorName: user.displayName,
+      commentStars: commentStars
     })
     .then(function() {
       console.log("Document successfully written!");
@@ -175,6 +177,7 @@ function CoursePage(props){
     const [user, loading, error] = useAuthState(firebase.auth())
     const [forceOrder, setForceOrder] = (useState(false))
     const [docError, setDocError] = useState("none")
+    const [commentStars, setCommentStars] = useState(null);
     const classes = useStyles()
 
     useEffect(() => {
@@ -230,7 +233,8 @@ function CoursePage(props){
                 resources: doc.data().resources,
                 position: doc.data().position,
                 creatorID: doc.data().creatorId,
-                creatorName: doc.data().creatorName
+                creatorName: doc.data().creatorName,
+                commentStars: doc.data().commentStars
               })
             }); // data entries for each
             if(rows.length > 1) {
@@ -320,8 +324,9 @@ function CoursePage(props){
         setMaxError(true)
         return
       }
-      newTopic(db, topicTitle, props.id, topics.length, user);
+      newTopic(db, topicTitle, props.id, topics.length, user, commentStars);
       setTopicTitle("");
+      setCommentStars(null);
       setMaxError(false)
     }
 
@@ -449,7 +454,7 @@ function CoursePage(props){
               {firebase.auth().currentUser!=null && 
                 ( !favorite ?
                   (<div className="favouriteIndicator" onClick={handleAddToFavList}>
-                      <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>Add list to favourites list</div>} 
+                      <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>Add to favourites</div>} 
                         placement="right" arrow
                       >
                         <BookmarkBorderIcon className={classes.favStarIcon} />
@@ -458,7 +463,7 @@ function CoursePage(props){
                   :
                   (
                     <div className="favouriteIndicator" onClick={handleRemoveFromFavList}>
-                      <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>Remove list from favourites list</div>} 
+                      <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>Remove from favourites</div>} 
                         placement="right" arrow
                       >
                         <BookmarkIcon className={classes.favStarIcon}/>
@@ -471,8 +476,9 @@ function CoursePage(props){
             </div>
           <div className="courseButtons">
             <form onSubmit={handleSubmit} className="courseButtons">
+            <Rating name="comment stars" value={commentStars} onChange={(event, value) => { setCommentStars(value)}}  />
               <TextField 
-                placeholder="New Topic" 
+                placeholder="Add Comment" 
                 error={maxError}
                 className={classes.topicTextArea} 
                 value={topicTitle} 
@@ -493,12 +499,12 @@ function CoursePage(props){
                 }}/>
               <Button variant="outlined" type='submit'
                 style={{marginLeft: '10px'}}
-              >Add Topic</Button>
+              >Add Comment</Button>
               {user &&
               <div>
                 {(user.uid === courseOwner) &&
                 <Button variant="outlined" color="secondary" onClick={handleCourseDelete}>
-                  Delete Course
+                  Delete Beer Entry
                 </Button>
                 }
               </div>

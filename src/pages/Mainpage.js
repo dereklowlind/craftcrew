@@ -176,6 +176,8 @@ function Mainpage(props){
         </DialogContentText>
         <Webcam
               audio={false}
+              height={400}
+              width={300}
               ref={webcamRef}
               screenshotFormat="image/jpeg"
               videoConstraints={ {facingMode: "environment" }}
@@ -286,6 +288,11 @@ function Mainpage(props){
               <div>
               {(!props.coursesLoading) &&
                 <div>
+                  {/* <Button className={classes.newCourseButton}
+                  onClick={() => setOpen(true)}
+                  >
+                    Add New Beer +
+                  </Button> */}
                 {props.isSignedIn ?
                   <Button className={classes.newCourseButton}
                   onClick={() => setOpen(true)}

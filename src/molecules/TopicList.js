@@ -6,6 +6,7 @@ import {
 import firebase from 'firebase'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import {makeStyles} from '@material-ui/core/styles'
+import Rating from '@material-ui/lab/Rating';
 import { Link } from 'react-router-dom'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
@@ -129,6 +130,7 @@ function TopicList(props){
                                 className={classes.accordianTitle}
                             >
                                 <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/>
+                                <Rating name="comment stars" value={topic.commentStars} readOnly  />
                                 {topic.title}
                                 {topic.creatorID == userUid &&
                                     <Button variant='outlined'color='secondary' className={classes.deleteButton} onClick={() => {handleTopicDelete(topic.docId, topic.title)}}>
