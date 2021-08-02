@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
 import {Button, Drawer, Hidden, Tooltip} from '@material-ui/core'
 import HomeIcon from '@material-ui/icons/Home';
+import firebase from 'firebase';
 import '../css/drawer.scss'
 import { Link } from 'react-router-dom'
 const drawerWidth = 260
@@ -115,30 +116,28 @@ function DrawerMenu(props) {
     // }
     const drawerContents = (
       <div>
-        <div className="drawerHeader">
+        {/* <div className="drawerHeader">
             <Link to="/" className="drawerTitle">
                 Lurndit
             </Link>
-        </div>
+        </div> */}
         
         <div className="drawerContent">
-          <div className="homeButtons">
-            <div style={{display: 'inline-block'}} >
-            🏠 &nbsp; &nbsp; 
-            <Link className={classes.homeButton} to="/">
-            &nbsp; Home &nbsp;
-            </Link>
-            </div>
-          </div>
           <div>
+          {!props.isSignedIn &&
+              <Button variant="outlined" onClick={() => props.setOpenSigninDialog(true)}>Sign in/up</Button>
+            }
+            {props.isSignedIn &&
+              <Button variant="outlined" onClick={() => firebase.auth().signOut()}>Sign-out</Button>
+            }
             <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>My Lists is where you bookmark your favourite lists</div>} 
               placement="right" arrow
             >
-              <div className={classes.favListHeader}>📜 &nbsp; &nbsp; My Lists</div>
+              <div className={classes.favListHeader}>📜 &nbsp; &nbsp; Bookmarks</div>
             </Tooltip>
             {!props.isSignedIn &&
               <div className={classes.signInButton}>
-                <span className="signInPrompt" onClick={()=>props.setOpenSigninDialog(true)}>Sign in</span> to add favorites!
+                <span className="signInPrompt" onClick={()=>props.setOpenSigninDialog(true)}>Sign in</span> to add bookmarks!
               </div>
             }
             {props.favList.map((c, index) => (

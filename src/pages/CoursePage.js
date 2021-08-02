@@ -440,7 +440,7 @@ function CoursePage(props){
         :
         (
           <div className="coursePage">
-            <img src={photoUrl} />
+            
             <div className="courseHeader">
               <div className="courseTitles">
                 <div className="courseTitle">
@@ -474,6 +474,7 @@ function CoursePage(props){
               }
               
             </div>
+            <img src={photoUrl} />
           <div className="courseButtons">
             <form onSubmit={handleSubmit} className="courseButtons">
             <Rating name="comment stars" value={commentStars} onChange={(event, value) => { setCommentStars(value)}}  />

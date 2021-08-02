@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
     },
     titleContainer: {
-        marginRight: '40px',
-        marginTop: '20px',
+        marginRight: '20px',
+        marginTop: '10px',
         textAlign: 'left',
     }
 }))
@@ -38,12 +38,12 @@ function HeaderBar(props) {
             </Link>
         </div>
         <TopSearchBar courseList={props.lists} triggerRender={props.triggerRender}/>
-        {/* <div className={classes.authContainer}>
+        <div className={classes.authContainer}>
             <Auth db={props.db} setFavList={props.setFavList} 
                 isSignedIn={props.isSignedIn} setIsSignedIn={props.setIsSignedIn}
                 openSigninDialog={props.openSigninDialog} setOpenSigninDialog={props.setOpenSigninDialog}
             />
-        </div> */}
+        </div>
     </div>
     )
 }
