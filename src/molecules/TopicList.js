@@ -34,11 +34,12 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "left"
     },
     resourceContainer: {
-        display: "flex",
+        // display: "flex",
         marginTop: '10px',
-        border: '1px solid #B9B9B9',
-        justifyContent: "space-between",
-        borderRadius: '8px',
+        borderTop: '1px solid #B9B9B9',
+        // justifyContent: "flex-start",
+        textAlign: "left",
+        // borderRadius: '8px',
         padding:'17px',
         fontColor: '#696969',
     },
@@ -122,59 +123,20 @@ function TopicList(props){
         return(
             <Draggable draggableId={topic.docId} index={index} isDragDisabled={!props.isSignedIn}>
                 {provided => (
-                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        <Accordion key={topic.docId} className={classes.accordion}>
-                            <AccordionSummary 
-                                expandIcon={<ExpandMoreIcon style={{fill: "green"}}/>}
-                                id={topic.docId} 
-                                className={classes.accordianTitle}
-                            >
-                                <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/>
+                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={classes.resourceContainer}>
+                                {/* <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/> */}
+                                <div>{topic.creatorName}</div>
                                 <Rating name="comment stars" value={topic.commentStars} readOnly  />
-                                {topic.title}
-                                {topic.creatorID == userUid &&
-                                    <Button variant='outlined'color='secondary' className={classes.deleteButton} onClick={() => {handleTopicDelete(topic.docId, topic.title)}}>
-                                        Delete
-                                    </Button> 
-                                }
-                            </AccordionSummary>
-                            <AccordionDetails className={classes.details}>
+                                <div className={classes.resourceTitle}>{topic.title}</div>
+                                <div className={classes.resourceDesc}>{topic.desc}</div>
                                 <div>
-                                {props.isSignedIn ?
-                                    <Button variant="outlined" type='submit' onClick={() => {
-                                        setOpen(true);
-                                        setResourceTopicId(topic.docId);
-                                    }}>
-                                        Add Resource
-                                    </Button>
-                                    :
-                                    <Button variant="outlined" type='submit' onClick={() => {
-                                        props.setOpenSigninDialog(true)
-                                    }}>
-                                        Add Resource
-                                    </Button>
-                                }
+                                    {topic.creatorID == userUid &&
+                                        <Button variant='outlined'color='secondary' className={classes.deleteButton} onClick={() => {handleTopicDelete(topic.docId, topic.title)}}>
+                                            Delete
+                                        </Button> 
+                                    }
+                                </div>
                                 
-                                </div>  
-                                {topic.resources.map((resource) => (
-                                        <div key={resource.resourceId} className={classes.resourceContainer}>
-                                            <div>
-                                                <div className={classes.resourceTitle}>{resource.title}</div>
-                                                <div className={classes.resourceDesc}>{resource.description}</div>
-                                                {/* <Link onClick={() => openInNewTab(resource.url)}>{resource.url}</Link> */}
-                                                {userUid == resource.creatorID &&
-                                                    <Button variant='outlined' color='secondary' onClick={()=>{handleDeleteResource(resource, topic.docId)}}>
-                                                        Delete Resource
-                                                    </Button>
-                                                }
-                                            </div>
-                                            <div>
-                                                <PreviewCard url={resource.url} />
-                                            </div>
-                                        </div>
-                                ))}
-                            </AccordionDetails>
-                        </Accordion>
                     </div>
                 )}
             </Draggable>

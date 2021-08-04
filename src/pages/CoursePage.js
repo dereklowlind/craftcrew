@@ -14,14 +14,23 @@ import '../css/coursepage.scss'
 
 
 const useStyles = makeStyles((theme) => ({
-  topicTextArea: {
+  topicTitleTextArea: {
     width: '400px',
     [theme.breakpoints.down('sm')]: {width: '80%'}
   },
-  textAreaFont: {
+  textTitleAreaFont: {
     fontSize: '16pt',
     fontFamily: "'Montserrat', sans-serif",
     fontWeight: 600
+  },
+  topicDescTextArea: {
+    width: '400px',
+    [theme.breakpoints.down('sm')]: {width: '80%'}
+  },
+  textDescAreaFont: {
+    fontSize: '12pt',
+    fontFamily: "'Montserrat', sans-serif",
+    fontWeight: 400
   },
   favStarIcon: {
     marginLeft: '5px',
@@ -36,11 +45,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-function newTopic(db, title, docId, numTopics, user, commentStars){
+function newTopic(db, title, desc, docId, numTopics, user, commentStars){
   console.log(numTopics)
     db.collection(`Lists/${docId}/topics`).add({
       datetime: new Date(),
       title: title,
+      desc: desc,
       resources: [],
       position: numTopics,
       creatorId: user.uid,
@@ -55,24 +65,24 @@ function newTopic(db, title, docId, numTopics, user, commentStars){
     });
   }
 
-function newResource(db, docId, topic, title, description, url, creatorID, creatorName){
-  db.collection(`Lists/${docId}/topics`).doc(topic).update({
-    resources: firebase.firestore.FieldValue.arrayUnion({
-      datetime: new Date(),
-      title: title,
-      description: description,
-      url: url,
-      creatorID: creatorID,
-      creatorName: creatorName 
-    })
-  })
-  .then(function() {
-    console.log("Document successfully written!");
-  })
-  .catch(function(error) {
-      console.error("Error adding document: ", error);
-  });
-}
+// function newResource(db, docId, topic, title, description, url, creatorID, creatorName){
+//   db.collection(`Lists/${docId}/topics`).doc(topic).update({
+//     resources: firebase.firestore.FieldValue.arrayUnion({
+//       datetime: new Date(),
+//       title: title,
+//       description: description,
+//       url: url,
+//       creatorID: creatorID,
+//       creatorName: creatorName 
+//     })
+//   })
+//   .then(function() {
+//     console.log("Document successfully written!");
+//   })
+//   .catch(function(error) {
+//       console.error("Error adding document: ", error);
+//   });
+// }
   
 function addToFavList(db, courseId, courseTitle, props){
 
@@ -170,6 +180,7 @@ function CoursePage(props){
     const [pageLoading, setLoading] = useState(true)
     const [topics, setTopics] = useState([]);
     const [topicTitle, setTopicTitle] = useState("");
+    const [topicDesc, setTopicDesc] = useState("");
     const [updated, setUpdated] = useState(false)
     const [maxError, setMaxError] = useState(false)
     const [favorite, setFavorite] = useState(false)
@@ -230,6 +241,7 @@ function CoursePage(props){
                 docId: doc.id,
                 timeStamp: timeStamp,
                 title: doc.data().title,
+                desc: doc.data().desc,
                 resources: doc.data().resources,
                 position: doc.data().position,
                 creatorID: doc.data().creatorId,
@@ -324,7 +336,7 @@ function CoursePage(props){
         setMaxError(true)
         return
       }
-      newTopic(db, topicTitle, props.id, topics.length, user, commentStars);
+      newTopic(db, topicTitle, topicDesc, props.id, topics.length, user, commentStars);
       setTopicTitle("");
       setCommentStars(null);
       setMaxError(false)
@@ -479,13 +491,13 @@ function CoursePage(props){
             <form onSubmit={handleSubmit} className="courseButtons">
             <Rating name="comment stars" value={commentStars} onChange={(event, value) => { setCommentStars(value)}}  />
               <TextField 
-                placeholder="Add Comment" 
+                placeholder="Comment Title" 
                 error={maxError}
-                className={classes.topicTextArea} 
+                className={classes.topicTitleTextArea} 
                 value={topicTitle} 
                 InputProps={{
                   classes: {
-                    input: classes.textAreaFont
+                    input: classes.textTitleAreaFont
                   }
                 }}
                 onChange={(e) => {
@@ -498,8 +510,28 @@ function CoursePage(props){
                     setTopicTitle(e.target.value)
                   }
                 }}/>
+                <TextField 
+                placeholder="Comment Description" 
+                error={maxError}
+                className={classes.topicDescTextArea} 
+                value={topicDesc} 
+                InputProps={{
+                  classes: {
+                    input: classes.textDescAreaFont
+                  }
+                }}
+                onChange={(e) => {
+                  if(e.target.value.length > 30) {
+                    setMaxError(true)
+                  } else if (maxError) {
+                    setMaxError(false)
+                    setTopicDesc(e.target.value)
+                  } else {
+                    setTopicDesc(e.target.value)
+                  }
+                }}/>
               <Button variant="outlined" type='submit'
-                style={{marginLeft: '10px'}}
+                // style={{marginLeft: '2px'}}
               >Add Comment</Button>
               {user &&
               <div>
@@ -518,7 +550,7 @@ function CoursePage(props){
             topics={topics} 
             isSignedIn={props.isSignedIn}
             setOpenSigninDialog={props.setOpenSigninDialog}
-            newResource={newResource}
+            // newResource={newResource}
             deleteResource={deleteResource}
             deleteTopic={deleteTopic}
             docId={props.id} 
