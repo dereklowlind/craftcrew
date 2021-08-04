@@ -3,7 +3,7 @@ import Mainpage from './pages/Mainpage'
 import CoursePage from './pages/CoursePage'
 import HeaderBar from './molecules/HeaderBar'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
-import DrawerMenu from './molecules/DrawerMenu'
+// import DrawerMenu from './molecules/DrawerMenu'
 import Helmet from 'react-helmet'
 import firebase from 'firebase'
 import 'firebase/firestore';
@@ -87,12 +87,12 @@ function App() {
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
       </Helmet>
       <Router>
-        <HeaderBar lists={lists} triggerRender={triggerRender} db={db} setFavList={setFavList}
+        <HeaderBar lists={lists} triggerRender={triggerRender} db={db} favList={favList} setFavList={setFavList}
           isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}
           openSigninDialog={openSigninDialog} setOpenSigninDialog={setOpenSigninDialog}
         />
         <div className="pageContainer">
-        <DrawerMenu favList={favList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>
+        {/* <DrawerMenu favList={favList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/> */}
             <Switch>
               <Route path="/course/:id" render={({ match }) => <CoursePage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>} /> 
               <Route path="/" render={(props) => (<Mainpage db={db} storage={storage} lists={lists} favList={favList} updateFavList={updateFavList} coursesLoading={courseListLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>

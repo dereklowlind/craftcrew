@@ -1,10 +1,14 @@
 import React, {useState} from 'react'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
-import {Button, Drawer, Hidden, Tooltip} from '@material-ui/core'
-import HomeIcon from '@material-ui/icons/Home';
+import {Button, Drawer, Hidden, Tooltip, IconButton} from '@material-ui/core'
+// import HomeIcon from '@material-ui/icons/Home';
+import MenuIcon from '@material-ui/icons/Menu';
+// import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+// import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import firebase from 'firebase';
 import '../css/drawer.scss'
 import { Link } from 'react-router-dom'
+import { Clear } from '@material-ui/icons';
 const drawerWidth = 260
 
 const useStyles = makeStyles((theme) => ({
@@ -96,6 +100,9 @@ const useStyles = makeStyles((theme) => ({
     signInButton: {
       marginTop: "5px",
       color: "gray"
+    },
+    closeButton: {
+      justifyContent: "flex-end"
     }
 }));
 
@@ -124,11 +131,20 @@ function DrawerMenu(props) {
         
         <div className="drawerContent">
           <div>
+            <div>
+              <IconButton className={classes.closeButton} onClick={handleDrawerToggle}>
+              <Clear />
+            </IconButton>
+            </div>
+          
           {!props.isSignedIn &&
               <Button variant="outlined" onClick={() => props.setOpenSigninDialog(true)}>Sign in/up</Button>
             }
             {props.isSignedIn &&
-              <Button variant="outlined" onClick={() => firebase.auth().signOut()}>Sign-out</Button>
+              <div>
+                <p>Welcome {firebase.auth().currentUser.displayName}!</p>
+                <Button variant="outlined" onClick={() => firebase.auth().signOut()}>Sign-out</Button>
+              </div>
             }
             <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>My Lists is where you bookmark your favourite lists</div>} 
               placement="right" arrow
@@ -153,13 +169,23 @@ function DrawerMenu(props) {
     );
 
     return (
-        <nav className={classes.drawer} aria-label="topic-container">
-            <Hidden smUp implementation="css">
+        // <nav className={classes.drawer} aria-label="topic-container">
+        //     <Hidden smUp implementation="css">
+        <div>
+            <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerToggle}
+            edge="start"
+            // className={classes.closeButton}
+          >
+            <MenuIcon />
+          </IconButton>
             <Drawer
-                variant="temporary"
-                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                variant="persistent"
+                anchor="right"
                 open={mobileOpen}
-                onClose={handleDrawerToggle}
+                // onClose={handleDrawerToggle}
                 classes={{
                 paper: classes.drawerPaper
                 }}
@@ -169,19 +195,20 @@ function DrawerMenu(props) {
             >
                 {drawerContents}
             </Drawer>
-            </Hidden>
-            <Hidden xsDown implementation="css">
-                <Drawer
-                    classes={{
-                    paper: classes.drawerPaper
-                    }}
-                    variant="permanent"
-                    open
-                >
-                    {drawerContents}
-                </Drawer>
-            </Hidden>
-        </nav>
+        </div>
+        //     </Hidden>
+        //     <Hidden xsDown implementation="css">
+        //         <Drawer
+        //             classes={{
+        //             paper: classes.drawerPaper
+        //             }}
+        //             variant="permanent"
+        //             open
+        //         >
+        //             {drawerContents}
+        //         </Drawer>
+        //     </Hidden>
+        // </nav>
     )
 }
 

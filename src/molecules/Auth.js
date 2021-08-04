@@ -86,14 +86,14 @@ function Auth(props) {
         <div>
           {signinDialog}
           {pwdResetHelpDialog}
-          <Button variant="outlined" onClick={() => setOpen(true)}>Sign in/up</Button>
+          {/* <Button variant="outlined" onClick={() => setOpen(true)}>Sign in/up</Button> */}
         </div>
       );
     }
     return (
       <div>
         {/* <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p> */}
-        <Button variant="outlined" onClick={() => firebase.auth().signOut()}>Sign-out</Button>
+        {/* <Button variant="outlined" onClick={() => firebase.auth().signOut()}>Sign-out</Button> */}
       </div>
     );
 }
