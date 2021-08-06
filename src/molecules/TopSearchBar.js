@@ -32,7 +32,7 @@ function TopSearchBar(props){
                     <TextField 
                         {...params} 
                         size="small" 
-                        label="Search Beers" 
+                        label="Search Drinks" 
                         margin="normal" 
                         variant="outlined"
                     />

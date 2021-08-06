@@ -537,7 +537,7 @@ function CoursePage(props){
               <div>
                 {(user.uid === courseOwner) &&
                 <Button variant="outlined" color="secondary" onClick={handleCourseDelete}>
-                  Delete Beer Entry
+                  Delete Drink Entry
                 </Button>
                 }
               </div>
