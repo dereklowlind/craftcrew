@@ -40,7 +40,7 @@ function HeaderBar(props) {
         <div className={classes.rowContainer}>
             <div className={classes.titleContainer}>
                 <Link to="/" className={classes.title}>
-                    Social beer
+                    Craft Crew
                 </Link>
             </div>
             <DrawerMenu favList={props.favList} isSignedIn={props.isSignedIn} setOpenSigninDialog={props.setOpenSigninDialog}/>

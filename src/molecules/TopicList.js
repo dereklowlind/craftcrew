@@ -125,7 +125,7 @@ function TopicList(props){
                 {provided => (
                     <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={classes.resourceContainer}>
                                 {/* <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/> */}
-                                <div>{topic.creatorName}</div>
+                                <div>{topic.creatorName.split(" ")[0]}</div>
                                 <Rating name="comment stars" value={topic.commentStars} readOnly  />
                                 <div className={classes.resourceTitle}>{topic.title}</div>
                                 <div className={classes.resourceDesc}>{topic.desc}</div>

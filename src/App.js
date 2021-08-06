@@ -11,7 +11,7 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 // import ReactGA from 'react-ga';
 // import Auth from './molecules/Auth'
 
-// Initialize Firebase
+// dev
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyCT_G8I6t642bWM-Jo6Yg7QZTPKjdNpygo",
@@ -22,6 +22,18 @@ const firebaseConfig = {
   appId: "1:681727518625:web:febb3cd58dcfde77844de0",
   measurementId: "G-GT3WQXSDMW"
 };
+
+// prod
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAqagHPw3xN-LixcBsH1qLbcyvenSghdS0",
+//   authDomain: "craftcrew-9b1b5.firebaseapp.com",
+//   projectId: "craftcrew-9b1b5",
+//   storageBucket: "craftcrew-9b1b5.appspot.com",
+//   messagingSenderId: "356906712221",
+//   appId: "1:356906712221:web:cba74631f07e696ba42874",
+//   measurementId: "G-C0E2DYPG7Q"
+// };
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
