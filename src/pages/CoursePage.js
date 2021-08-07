@@ -404,7 +404,7 @@ function CoursePage(props){
     }
 
     const openConfirmation = () =>{
-      return window.confirm("Are you sure you want to delete this course?")
+      return window.confirm("Are you sure you want to delete this drink?")
     }
 
     if(docError=="notFound") {

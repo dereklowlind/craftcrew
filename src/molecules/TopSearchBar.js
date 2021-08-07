@@ -17,7 +17,7 @@ function TopSearchBar(props){
             console.log("skipping")
         } else {
 
-            history.push("/course/"+newVal.docId)
+            history.push("/drink/"+newVal.docId)
             props.triggerRender()
         }
     }

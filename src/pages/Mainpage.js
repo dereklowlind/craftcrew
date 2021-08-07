@@ -151,7 +151,7 @@ function Mainpage(props){
   }
 
   const snackGo = () => {
-    history.push("/course/" + props.recentId)
+    history.push("/drink/" + props.recentId)
     closeSnack()
   }
 
@@ -280,7 +280,7 @@ function Mainpage(props){
           <div className="titleSection">
             <div className="pageTitleContainer">
               <h1 className="pageTitle">
-                craftcrew insights to find drinks
+                Craft Crew rates the Craft Brew for you!
               </h1>
             </div>
           </div>

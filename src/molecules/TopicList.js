@@ -90,7 +90,7 @@ function TopicList(props){
     }
     
     const handleTopicDelete = (id, title) => {
-        const proceed = window.confirm("Delete your topic: " + title + "?")
+        const proceed = window.confirm("Delete your comment: " + title + "?")
         if(proceed) {
             props.deleteTopic(id)
         } else {

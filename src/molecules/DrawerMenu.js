@@ -158,7 +158,7 @@ function DrawerMenu(props) {
             }
             {props.favList.map((c, index) => (
               <div key={c.courseId}>
-                <Link className={classes.favListButton} to={`/course/${c.courseId}`}>
+                <Link className={classes.favListButton} to={`/drink/${c.courseId}`}>
                 &nbsp; &nbsp; {c.courseTitle} &nbsp; &nbsp;
                 </Link>
               </div>

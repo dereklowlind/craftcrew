@@ -75,7 +75,7 @@ function CourseSearch(props) {
     var displayResults = filteredResults.map((result, index) => {
         return (
             <Grid item xs={rowFraction} key={index}>
-                <Link to={'/course/' + result[0]} style={{ textDecoration: 'none' }}>
+                <Link to={'/drink/' + result[0]} style={{ textDecoration: 'none' }}>
                     <div className="searchResult" onClick={()=>courseClick(index)}>
                         <div className="searchText">
                             <div className="searchTerm">
