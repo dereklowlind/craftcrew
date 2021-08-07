@@ -42,14 +42,16 @@ function CourseSearch(props) {
         setSearchTerm(event.target.value)
     }
 
-    var regex = new RegExp('^' + searchTerm.toLowerCase().split(" ").join(""))
+    // var regex = new RegExp('^' + searchTerm.toLowerCase().split(" ").join(""))
+    var regex = new RegExp(searchTerm.toLowerCase().split(" ").join(""))
 
     var filteredResults = []
 
     const maxResults = (isMobile ? 10 : 9)
 
     for(var i=0; i < props.lists.length; i++) {
-        var lower = props.lists[i].title.toLowerCase().split(" ").join("")
+        var lower = (props.lists[i].title + props.lists[i].subtitle).toLowerCase().split(" ").join("")
+        // console.log(lower);
         const foundLower = regex.test(lower)
         if(foundLower) {
             filteredResults.push([props.lists[i].docId, props.lists[i].title, props.lists[i].subtitle])

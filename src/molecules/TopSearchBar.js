@@ -37,7 +37,7 @@ function TopSearchBar(props){
                         variant="outlined"
                     />
                 )}
-                getOptionLabel={(option)=>option.title}
+                getOptionLabel={(option)=>(option.title + ": " + option.subtitle)}
                 onChange={(e, newValue)=> {
                     handleSelection(newValue)
                 }}
