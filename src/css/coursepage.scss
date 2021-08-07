@@ -19,15 +19,16 @@ $theFont: 'Rubik';
 .courseTitle {
     font-family: $theFont;
     font-weight: 700;
-    font-size: 32pt;
+    font-size: 20pt;
     
 }
 
 .courseSubtitle {
     font-family: $theFont;
     font-weight: 600;
-    color: grey;
+    // color: grey;
     display: inline-block;
+    font-size: 24pt;
 }
 
 .courseButtons {
