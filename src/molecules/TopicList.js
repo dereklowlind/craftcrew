@@ -10,7 +10,6 @@ import Rating from '@material-ui/lab/Rating';
 import { Link } from 'react-router-dom'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragIndicatorIcon from '@material-ui/icons/DragIndicator';
-import PreviewCard from './PreviewCard'
 import { useAuthState } from 'react-firebase-hooks/auth'
 
 const useStyles = makeStyles((theme) => ({
