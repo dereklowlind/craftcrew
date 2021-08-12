@@ -52,7 +52,7 @@ function App() {
   const [recentTitle, setRecentTitle] = useState("")
   const [recentId, setRecentId] = useState("")
   const [routeTrigger, setRouteTrigger] = useState(false)
-  const [courseListLoading, setCourseListLoading] = useState(true)
+  const [drinksLoading, setDrinksLoading] = useState(true)
 
 
   
@@ -78,7 +78,7 @@ function App() {
         return (a.title < b.title) ? -1 : 1
       })
       setLists(rows);
-      setCourseListLoading(false)
+      setDrinksLoading(false)
     });
   }, [submitSuccess]);
 
@@ -105,7 +105,7 @@ function App() {
         <div className="pageContainer">
             <Switch>
               <Route path="/drink/:id" render={({ match }) => <DrinkPage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>} /> 
-              <Route path="/" render={(props) => (<Mainpage db={db} storage={storage} lists={lists} favList={favList} updateFavList={updateFavList} coursesLoading={courseListLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>
+              <Route path="/" render={(props) => (<Mainpage db={db} storage={storage} lists={lists} favList={favList} updateFavList={updateFavList} drinksLoading={drinksLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>
             </Switch>
             
         </div>

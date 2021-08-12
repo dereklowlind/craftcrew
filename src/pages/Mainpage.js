@@ -286,7 +286,7 @@ function Mainpage(props){
           </div>
           <div className="commandSection">
               <div>
-              {(!props.coursesLoading) &&
+              {(!props.drinksLoading) &&
                 <div>
                   {/* <Button className={classes.newCourseButton}
                   onClick={() => setOpen(true)}
@@ -311,7 +311,7 @@ function Mainpage(props){
               </div>
           </div>
           <div className="courseSection">
-            {props.coursesLoading ? 
+            {props.drinksLoading ? 
             (
               <div>
                 <CircularProgress size={60}/>
