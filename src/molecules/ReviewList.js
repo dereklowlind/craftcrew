@@ -89,7 +89,7 @@ function TopicList(props){
     }
     
     const handleTopicDelete = (id, title) => {
-        const proceed = window.confirm("Delete your comment: " + title + "?")
+        const proceed = window.confirm("Delete your review: " + title + "?")
         if(proceed) {
             props.deleteTopic(id)
         } else {
@@ -125,7 +125,7 @@ function TopicList(props){
                     <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={classes.resourceContainer}>
                                 {/* <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/> */}
                                 <div>{topic.creatorName.split(" ")[0]}</div>
-                                <Rating name="comment stars" value={topic.commentStars} readOnly  />
+                                <Rating name="review stars" value={topic.reviewStars} readOnly  />
                                 <div className={classes.resourceTitle}>{topic.title}</div>
                                 <div className={classes.resourceDesc}>{topic.desc}</div>
                                 <div>

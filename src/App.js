@@ -59,7 +59,7 @@ function App() {
   
   //on component mount
   useEffect(() => {
-    db.collection("Lists").onSnapshot((dataEntries) => {
+    db.collection("Drinks").onSnapshot((dataEntries) => {
       let rows = []
       dataEntries.forEach(doc => {
         if(doc.data().title === undefined) {

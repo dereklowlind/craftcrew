@@ -4,7 +4,7 @@ import 'firebase/firestore';
 import {Button, TextField, Tooltip} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import Rating from '@material-ui/lab/Rating';
-import TopicList from '../molecules/TopicList'
+import TopicList from '../molecules/ReviewList'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -45,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-function newTopic(db, title, desc, docId, numTopics, user, commentStars){
+function newTopic(db, title, desc, docId, numTopics, user, reviewStars){
   console.log(numTopics)
-    db.collection(`Lists/${docId}/topics`).add({
+    db.collection(`Drinks/${docId}/topics`).add({
       datetime: new Date(),
       title: title,
       desc: desc,
@@ -55,7 +55,7 @@ function newTopic(db, title, desc, docId, numTopics, user, commentStars){
       position: numTopics,
       creatorId: user.uid,
       creatorName: user.displayName,
-      commentStars: commentStars
+      reviewStars: reviewStars
     })
     .then(function() {
       console.log("Document successfully written!");
@@ -66,7 +66,7 @@ function newTopic(db, title, desc, docId, numTopics, user, commentStars){
   }
 
 // function newResource(db, docId, topic, title, description, url, creatorID, creatorName){
-//   db.collection(`Lists/${docId}/topics`).doc(topic).update({
+//   db.collection(`Drinks/${docId}/topics`).doc(topic).update({
 //     resources: firebase.firestore.FieldValue.arrayUnion({
 //       datetime: new Date(),
 //       title: title,
@@ -141,14 +141,14 @@ function sortField(list) {
 
 // function updatePositions(db, rows, id) {
 
-//   db.collection("Lists").doc(id).set({
+//   db.collection("Drinks").doc(id).set({
 //     useForcedOrder: true
 //   }, {merge: true})
 
 //   for(var i = 0; i < rows.length; i++) {
 //     console.log(rows[i].docId)
 //     console.log(rows[i].title)
-//     db.collection("Lists").doc(id).collection("topics").doc(rows[i].docId).set({
+//     db.collection("Drinks").doc(id).collection("topics").doc(rows[i].docId).set({
 //       position: i
 //     }, {merge: true}).catch(function(error) {
 //       console.log("Error setting new positions.")
@@ -157,14 +157,14 @@ function sortField(list) {
 // }
 
 function autoSave(db, topics, id) {
-  db.collection("Lists").doc(id).set({
+  db.collection("Drinks").doc(id).set({
     useForcedOrder: true
   }, {merge: true})
 
   for(var i = 0; i < topics.length; i++) {
     console.log(topics[i].docId)
     console.log(topics[i].title)
-    db.collection("Lists").doc(id).collection("topics").doc(topics[i].docId).set({
+    db.collection("Drinks").doc(id).collection("topics").doc(topics[i].docId).set({
       position: (topics.length - i - 1)
     }, {merge: true}).catch(function(error) {
       console.log("Error setting new positions.")
@@ -188,7 +188,7 @@ function CoursePage(props){
     const [user, loading, error] = useAuthState(firebase.auth())
     const [forceOrder, setForceOrder] = (useState(false))
     const [docError, setDocError] = useState("none")
-    const [commentStars, setCommentStars] = useState(null);
+    const [reviewStars, setReviewStars] = useState(null);
     const classes = useStyles()
 
     useEffect(() => {
@@ -210,7 +210,7 @@ function CoursePage(props){
     }, [props.favList])
 
     useEffect(() => {      
-      db.collection('Lists').doc(props.id).get().then(function(doc) {
+      db.collection('Drinks').doc(props.id).get().then(function(doc) {
         const docData = doc.data()
         if (docData.title == undefined) {
           setDocError("notFound")
@@ -233,7 +233,7 @@ function CoursePage(props){
         }
         
         if(docError=="none") {
-          db.collection(`Lists/${props.id}/topics`).onSnapshot((dataEntries) => {
+          db.collection(`Drinks/${props.id}/topics`).onSnapshot((dataEntries) => {
             let rows = []
             dataEntries.forEach(doc => {
               const timeStamp = doc.data().datetime.toDate().toString()
@@ -246,7 +246,7 @@ function CoursePage(props){
                 position: doc.data().position,
                 creatorID: doc.data().creatorId,
                 creatorName: doc.data().creatorName,
-                commentStars: doc.data().commentStars
+                reviewStars: doc.data().reviewStars
               })
             }); // data entries for each
             if(rows.length > 1) {
@@ -274,12 +274,12 @@ function CoursePage(props){
       if(proceed) {
         setLoading(true)
         removeFromFavList(db, "", props)
-        db.collection('Lists').doc(props.id).collection('topics').get().then(function(querySnapshot) {
+        db.collection('Drinks').doc(props.id).collection('topics').get().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
             doc.ref.delete()
           })
         })
-        db.collection('Lists').doc(props.id).delete().then(function(){
+        db.collection('Drinks').doc(props.id).delete().then(function(){
           console.log("Delete success.")
           setDocError("deleted")
           setLoading(false)
@@ -296,7 +296,7 @@ function CoursePage(props){
       })
       setTopics(newList)
 
-      db.collection('Lists').doc(props.id).collection('topics').doc(id).delete()
+      db.collection('Drinks').doc(props.id).collection('topics').doc(id).delete()
 
     }
 
@@ -306,7 +306,7 @@ function CoursePage(props){
         return element.resources.title != resource.title
       })
       setTopics(newList)
-      db.collection('Lists').doc(props.id).collection('topics').doc(topicID).update({
+      db.collection('Drinks').doc(props.id).collection('topics').doc(topicID).update({
         "resources": firebase.firestore.FieldValue.arrayRemove(
           {
             "creatorID": resource.creatorID,
@@ -336,9 +336,9 @@ function CoursePage(props){
         setMaxError(true)
         return
       }
-      newTopic(db, topicTitle, topicDesc, props.id, topics.length, user, commentStars);
+      newTopic(db, topicTitle, topicDesc, props.id, topics.length, user, reviewStars);
       setTopicTitle("");
-      setCommentStars(null);
+      setReviewStars(null);
       setMaxError(false)
     }
 
@@ -489,9 +489,9 @@ function CoursePage(props){
             <img src={photoUrl} />
           <div className="courseButtons">
             <form onSubmit={handleSubmit} className="courseButtons">
-            <Rating name="comment stars" value={commentStars} onChange={(event, value) => { setCommentStars(value)}}  />
+            <Rating name="review stars" value={reviewStars} onChange={(event, value) => { setReviewStars(value)}}  />
               <TextField 
-                placeholder="Comment Title" 
+                placeholder="Review Title" 
                 error={maxError}
                 className={classes.topicTitleTextArea} 
                 value={topicTitle} 
@@ -511,7 +511,7 @@ function CoursePage(props){
                   }
                 }}/>
                 <TextField 
-                placeholder="Comment Description" 
+                placeholder="Review Description" 
                 error={maxError}
                 className={classes.topicDescTextArea} 
                 value={topicDesc} 
@@ -532,7 +532,7 @@ function CoursePage(props){
                 }}/>
               <Button variant="outlined" type='submit'
                 // style={{marginLeft: '2px'}}
-              >Add Comment</Button>
+              >Add Review</Button>
               {user &&
               <div>
                 {(user.uid === courseOwner) &&

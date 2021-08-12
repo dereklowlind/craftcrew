@@ -101,7 +101,7 @@ function Mainpage(props){
       setDialogEmpty(newEmpty)
       return
     }
-    const newListRef = db.collection("Lists").doc();
+    const newListRef = db.collection("Drinks").doc();
     const photoPathRef = storage.ref(`publicImages/${newListRef.id}/mainPic.jpg`);
     
 
