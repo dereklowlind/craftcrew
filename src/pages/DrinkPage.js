@@ -4,7 +4,7 @@ import 'firebase/firestore';
 import {Button, TextField, Tooltip} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import Rating from '@material-ui/lab/Rating';
-import TopicList from '../molecules/ReviewList'
+import ReviewList from '../molecules/ReviewList'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -300,30 +300,6 @@ function DrinkPage(props){
 
     }
 
-    const deleteResource = (resource, topicID) => {
-      console.log(resource)
-      const newList = topics.filter((element) => {
-        return element.resources.title != resource.title
-      })
-      setTopics(newList)
-      db.collection('Drinks').doc(props.id).collection('topics').doc(topicID).update({
-        "resources": firebase.firestore.FieldValue.arrayRemove(
-          {
-            "creatorID": resource.creatorID,
-            "creatorName": resource.creatorName,
-            "datetime": resource.datetime,
-            "description": resource.description,
-            "title": resource.title,
-            "url": resource.url
-          }
-        )
-      }).catch((error)=>{
-        console.log(error)
-        
-      })
-
-    }
-
     const handleSubmit = e => {
       e.preventDefault();
 
@@ -545,13 +521,11 @@ function DrinkPage(props){
             </form>
           </div>
 
-          <TopicList 
+          <ReviewList 
             db={db} 
             topics={topics} 
             isSignedIn={props.isSignedIn}
             setOpenSigninDialog={props.setOpenSigninDialog}
-            // newResource={newResource}
-            deleteResource={deleteResource}
             deleteTopic={deleteTopic}
             docId={props.id} 
             switchTopic={getContent}

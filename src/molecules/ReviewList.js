@@ -60,33 +60,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function TopicList(props){  
+function ReviewList(props){  
     const [open, setOpen] = useState(false); 
-    const [resourceTitle, setResourceTitle] = useState("");
-    const [resourceDesc, setResourceDesc] = useState("");
-    const [resourceUrl, setResourceUrl] = useState(""); 
-    const [resourceTopicId, setResourceTopicId] = useState("");
     const [user, loading, error] = useAuthState(firebase.auth())
-    
     const classes = useStyles()
-
-    const handleAddResource = () => {
-        setOpen(false);
-        props.newResource(props.db, props.docId, resourceTopicId, resourceTitle, resourceDesc, resourceUrl, user.uid, user.displayName);
-        setResourceTitle("");
-        setResourceDesc("");
-        setResourceUrl("");
-        setResourceTopicId("");
-    }
-
-    const handleDeleteResource = (resourceInfo, topicID) => {
-        const proceed = window.confirm("Delete your resource: " + resourceInfo.title + "?")
-        if(proceed) {
-            props.deleteResource(resourceInfo, topicID)
-        } else {
-            console.log("cancelled")
-        }    
-    }
     
     const handleTopicDelete = (id, title) => {
         const proceed = window.confirm("Delete your review: " + title + "?")
@@ -101,10 +78,6 @@ function TopicList(props){
         props.onDragEnd(result)
     }
 
-    // const openInNewTab = (url) => {
-    //     const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
-    //     if (newWindow) newWindow.opener = null
-    //   }
     
     // console.log("in showtopictable", props.topics);
     if(props.topics === []){
@@ -148,53 +121,8 @@ function TopicList(props){
     
     return(
         <div>
-        <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Add Resource</DialogTitle>
-            <DialogContent>
-            <DialogContentText>
-                Please enter the new resource below
-            </DialogContentText>
-            <TextField
-                autoFocus
-                margin="dense"
-                id="title"
-                label="Title"
-                fullWidth
-                value={resourceTitle} onChange={(e) => setResourceTitle(e.target.value)}
-            />
-            <TextField
-                margin="dense"
-                id="description"
-                label="Description"
-                fullWidth
-                value={resourceDesc} onChange={(e) => setResourceDesc(e.target.value)}
-            />
-            <TextField
-                margin="dense"
-                id="url"
-                label="URL"
-                type="url"
-                fullWidth
-                value={resourceUrl} onChange={(e) => setResourceUrl(e.target.value)}
-            />
-            </DialogContent>
-            <DialogActions>
-            <Button onClick={(e) => {
-                setOpen(false);
-                setResourceTitle("");
-                setResourceDesc("");
-                setResourceUrl("");
-                setResourceTopicId("");
-            }} color="primary">
-                Cancel
-            </Button>
-            <Button onClick={handleAddResource} color="primary">
-                Add
-            </Button>
-            </DialogActions>
-        </Dialog>
         <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="topiclist">
+            <Droppable droppableId="ReviewList">
                 {provided => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
                         {accordianList}
@@ -207,4 +135,4 @@ function TopicList(props){
     )
 
 }
-export default TopicList
+export default ReviewList
