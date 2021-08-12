@@ -6,7 +6,7 @@ import {Button, Dialog, DialogContent, DialogContentText,
   CircularProgress, IconButton, Snackbar} 
 from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
-import CourseSearch from '../molecules/CourseSearch'
+import DrinkSearch from '../molecules/DrinkSearch'
 import { useHistory } from 'react-router-dom'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
 import {useAuthState} from 'react-firebase-hooks/auth'
@@ -319,7 +319,7 @@ function Mainpage(props){
             )
             :
             (
-              <CourseSearch lists={props.lists} />
+              <DrinkSearch lists={props.lists} />
             )
             }
             

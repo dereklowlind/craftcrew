@@ -3,13 +3,12 @@ import Mainpage from './pages/Mainpage'
 import DrinkPage from './pages/DrinkPage'
 import HeaderBar from './molecules/HeaderBar'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
-// import DrawerMenu from './molecules/DrawerMenu'
 import Helmet from 'react-helmet'
 import firebase from 'firebase'
 import 'firebase/firestore';
 import { useEffect, useState, useCallback, useRef } from 'react'
 // import ReactGA from 'react-ga';
-// import Auth from './molecules/Auth'
+
 
 // dev
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -54,7 +53,7 @@ function App() {
   const [recentId, setRecentId] = useState("")
   const [routeTrigger, setRouteTrigger] = useState(false)
   const [courseListLoading, setCourseListLoading] = useState(true)
-  // const [imgSrc, setImgSrc] = useState(null);
+
 
   
   //on component mount
@@ -104,7 +103,6 @@ function App() {
           openSigninDialog={openSigninDialog} setOpenSigninDialog={setOpenSigninDialog}
         />
         <div className="pageContainer">
-        {/* <DrawerMenu favList={favList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/> */}
             <Switch>
               <Route path="/drink/:id" render={({ match }) => <DrinkPage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>} /> 
               <Route path="/" render={(props) => (<Mainpage db={db} storage={storage} lists={lists} favList={favList} updateFavList={updateFavList} coursesLoading={courseListLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>
