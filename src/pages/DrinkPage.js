@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 function newTopic(db, title, desc, docId, numTopics, user, reviewStars){
   console.log(numTopics)
-    db.collection(`Drinks/${docId}/topics`).add({
+    db.collection(`Drinks/${docId}/reviews`).add({
       datetime: new Date(),
       title: title,
       desc: desc,
@@ -66,7 +66,7 @@ function newTopic(db, title, desc, docId, numTopics, user, reviewStars){
   }
 
 // function newResource(db, docId, topic, title, description, url, creatorID, creatorName){
-//   db.collection(`Drinks/${docId}/topics`).doc(topic).update({
+//   db.collection(`Drinks/${docId}/reviews`).doc(topic).update({
 //     resources: firebase.firestore.FieldValue.arrayUnion({
 //       datetime: new Date(),
 //       title: title,
@@ -233,7 +233,7 @@ function DrinkPage(props){
         }
         
         if(docError=="none") {
-          db.collection(`Drinks/${props.id}/topics`).onSnapshot((dataEntries) => {
+          db.collection(`Drinks/${props.id}/reviews`).onSnapshot((dataEntries) => {
             let rows = []
             dataEntries.forEach(doc => {
               const timeStamp = doc.data().datetime.toDate().toString()
@@ -274,12 +274,14 @@ function DrinkPage(props){
       if(proceed) {
         setLoading(true)
         removeFromFavList(db, "", props)
-        db.collection('Drinks').doc(props.id).collection('topics').get().then(function(querySnapshot) {
+        // db.collection('Drinks').doc(props.id).collection('reviews').get().then(function(querySnapshot) {
+        db.collection(`Drinks/${props.id}/reviews`).get().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
             doc.ref.delete()
           })
         })
         db.collection('Drinks').doc(props.id).delete().then(function(){
+        // db.collection(`Drinks/${props.id}`).delete().then(function(){
           console.log("Delete success.")
           setDocError("deleted")
           setLoading(false)
@@ -296,7 +298,8 @@ function DrinkPage(props){
       })
       setTopics(newList)
 
-      db.collection('Drinks').doc(props.id).collection('topics').doc(id).delete()
+      // db.collection('Drinks').doc(props.id).collection('reviews').doc(id).delete()
+      db.collection(`Drinks/${props.id}/reviews`).doc(id).delete()
 
     }
 
