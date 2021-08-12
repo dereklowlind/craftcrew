@@ -1,6 +1,6 @@
 import './App.css'
 import Mainpage from './pages/Mainpage'
-import CoursePage from './pages/CoursePage'
+import DrinkPage from './pages/DrinkPage'
 import HeaderBar from './molecules/HeaderBar'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 // import DrawerMenu from './molecules/DrawerMenu'
@@ -106,7 +106,7 @@ function App() {
         <div className="pageContainer">
         {/* <DrawerMenu favList={favList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/> */}
             <Switch>
-              <Route path="/drink/:id" render={({ match }) => <CoursePage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>} /> 
+              <Route path="/drink/:id" render={({ match }) => <DrinkPage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>} /> 
               <Route path="/" render={(props) => (<Mainpage db={db} storage={storage} lists={lists} favList={favList} updateFavList={updateFavList} coursesLoading={courseListLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>
             </Switch>
             

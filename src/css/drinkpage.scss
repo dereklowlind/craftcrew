@@ -1,29 +1,29 @@
 $theFont: 'Rubik';
 
-.coursePage {
+.drinkPage {
     margin-left: 100px;
     margin-right: 100px;
     margin-bottom: 100px;
 }
 
-.courseHeader {
+.drinkHeader {
     text-align: left;
     margin-left: 50px;
     margin-top: 50px;
 }
 
-.courseTitles {
+.drinkTitles {
     display: inline-block;
 }
 
-.courseTitle {
+.drinkTitle {
     font-family: $theFont;
     font-weight: 700;
     font-size: 20pt;
     
 }
 
-.courseSubtitle {
+.drinkSubtitle {
     font-family: $theFont;
     font-weight: 600;
     // color: grey;
@@ -31,7 +31,7 @@ $theFont: 'Rubik';
     font-size: 24pt;
 }
 
-.courseButtons {
+.drinkButtons {
     text-align: left;
     margin-left: 25px;
     margin-top: 25px;
@@ -53,20 +53,20 @@ $theFont: 'Rubik';
 }
 
 @media screen and (max-width: 600) {
-    .coursePage {
+    .drinkPage {
         width: 100%;
         margin-left: 0;
         margin-right: 0;
         margin-bottom: 0;
     } 
 
-    .courseHeader {
+    .drinkHeader {
         text-align: center;
         margin-left: -50px;
         margin-top: 0;
     }
 
-    .courseTitle {
+    .drinkTitle {
         font-family: $theFont;
         font-weight: 700;
         font-size: 32pt;
@@ -74,7 +74,7 @@ $theFont: 'Rubik';
  }
 
  @media screen and (max-width: 900px) {
-    .coursePage {
+    .drinkPage {
         width: 100%;
         margin-left: 0;
         margin-right: 0;

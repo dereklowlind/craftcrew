@@ -10,7 +10,7 @@ import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {useAuthState} from 'react-firebase-hooks/auth'
 import {Link} from 'react-router-dom'
-import '../css/coursepage.scss'
+import '../css/drinkpage.scss'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -172,7 +172,7 @@ function autoSave(db, topics, id) {
   }
 }
 
-function CoursePage(props){
+function DrinkPage(props){
     const db = props.db;
     const [photoUrl, setPhotoUrl] = useState("");
     const [courseTitle, setCoursetitle] = useState("")
@@ -409,13 +409,13 @@ function CoursePage(props){
 
     if(docError=="notFound") {
       return (
-        <div className="coursePage">
-          <div className="courseHeader">
-            <div className="courseTitles">
-              <div className="courseTitle">
+        <div className="drinkPage">
+          <div className="drinkHeader">
+            <div className="drinkTitles">
+              <div className="drinkTitle">
                 {"404 Not Found"}
               </div>
-              <div className="courseSubtitle">
+              <div className="drinkSubtitle">
                 {"We couldn't find what you were looking for, or it doesn't exist!"}
               </div>
             </div>
@@ -424,13 +424,13 @@ function CoursePage(props){
       )
     } else if (docError=="deleted") {
       return(
-        <div className="coursePage">
-          <div className="courseHeader">
-            <div className="courseTitles">
-              <div className="courseTitle">
+        <div className="drinkPage">
+          <div className="drinkHeader">
+            <div className="drinkTitles">
+              <div className="drinkTitle">
                 {"Resource deleted"}
               </div>
-              <div className="courseSubtitle">
+              <div className="drinkSubtitle">
                 <Link to="/">
                   Back to Home
                 </Link>
@@ -451,14 +451,14 @@ function CoursePage(props){
         )
         :
         (
-          <div className="coursePage">
+          <div className="drinkPage">
             
-            <div className="courseHeader">
-              <div className="courseTitles">
-                <div className="courseTitle">
+            <div className="drinkHeader">
+              <div className="drinkTitles">
+                <div className="drinkTitle">
                   {courseTitle}
                 </div>
-                <div className="courseSubtitle">
+                <div className="drinkSubtitle">
                   {courseSubtitle}
                 </div>
               </div>
@@ -487,8 +487,8 @@ function CoursePage(props){
               
             </div>
             <img src={photoUrl} />
-          <div className="courseButtons">
-            <form onSubmit={handleSubmit} className="courseButtons">
+          <div className="drinkButtons">
+            <form onSubmit={handleSubmit} className="drinkButtons">
             <Rating name="review stars" value={reviewStars} onChange={(event, value) => { setReviewStars(value)}}  />
               <TextField 
                 placeholder="Review Title" 
@@ -565,4 +565,4 @@ function CoursePage(props){
 }
 
 
-export default CoursePage
+export default DrinkPage
