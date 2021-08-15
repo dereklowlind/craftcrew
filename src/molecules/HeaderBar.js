@@ -46,7 +46,7 @@ function HeaderBar(props) {
             <DrawerMenu favList={props.favList} isSignedIn={props.isSignedIn} setOpenSigninDialog={props.setOpenSigninDialog}/>
         </div>
         <div  className={classes.rowContainer}>
-            <TopSearchBar courseList={props.lists} triggerRender={props.triggerRender}/>
+            <TopSearchBar courseList={props.drinks} triggerRender={props.triggerRender}/>
         </div>
         
         <div className={classes.authContainer}>

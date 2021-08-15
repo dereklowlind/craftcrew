@@ -47,7 +47,7 @@ function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [openSigninDialog, setOpenSigninDialog] = useState(false);
   const [favList, setFavList] = useState([]);
-  const [lists, setLists] = useState([]);
+  const [drinks, setDrinks] = useState([]);
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [recentTitle, setRecentTitle] = useState("")
   const [recentId, setRecentId] = useState("")
@@ -77,7 +77,7 @@ function App() {
       rows.sort(function(a, b) {
         return (a.title < b.title) ? -1 : 1
       })
-      setLists(rows);
+      setDrinks(rows);
       setDrinksLoading(false)
     });
   }, [submitSuccess]);
@@ -98,14 +98,14 @@ function App() {
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
       </Helmet>
       <Router>
-        <HeaderBar lists={lists} triggerRender={triggerRender} db={db} favList={favList} setFavList={setFavList}
+        <HeaderBar drinks={drinks} triggerRender={triggerRender} db={db} favList={favList} setFavList={setFavList}
           isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}
           openSigninDialog={openSigninDialog} setOpenSigninDialog={setOpenSigninDialog}
         />
         <div className="pageContainer">
             <Switch>
               <Route path="/drink/:id" render={({ match }) => <DrinkPage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>} /> 
-              <Route path="/" render={(props) => (<Mainpage db={db} storage={storage} lists={lists} favList={favList} updateFavList={updateFavList} drinksLoading={drinksLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>
+              <Route path="/" render={(props) => (<Mainpage db={db} storage={storage} drinks={drinks} favList={favList} updateFavList={updateFavList} drinksLoading={drinksLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>
             </Switch>
             
         </div>

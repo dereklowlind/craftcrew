@@ -54,7 +54,7 @@ function Mainpage(props){
   const storage = props.storage;
   let history = useHistory()
   //state
-  //const [lists, setLists] = useState([]);
+  //const [drinks, setDrinks] = useState([]);
   const [open, setOpen] = useState(false);
   const [courseTitle, setCourseTitle] = useState("")
   const [courseSubject, setCourseSubject] = useState("N/A")
@@ -319,7 +319,7 @@ function Mainpage(props){
             )
             :
             (
-              <DrinkSearch lists={props.lists} />
+              <DrinkSearch drinks={props.drinks} />
             )
             }
             

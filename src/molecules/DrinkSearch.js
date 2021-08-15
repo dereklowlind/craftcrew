@@ -49,12 +49,12 @@ function DrinkSearch(props) {
 
     const maxResults = (isMobile ? 10 : 9)
 
-    for(var i=0; i < props.lists.length; i++) {
-        var lower = (props.lists[i].title + props.lists[i].subtitle).toLowerCase().split(" ").join("")
+    for(var i=0; i < props.drinks.length; i++) {
+        var lower = (props.drinks[i].title + props.drinks[i].subtitle).toLowerCase().split(" ").join("")
         // console.log(lower);
         const foundLower = regex.test(lower)
         if(foundLower) {
-            filteredResults.push([props.lists[i].docId, props.lists[i].title, props.lists[i].subtitle])
+            filteredResults.push([props.drinks[i].docId, props.drinks[i].title, props.drinks[i].subtitle])
         }
 
         if(filteredResults.length === maxResults) {
