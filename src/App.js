@@ -86,7 +86,7 @@ function App() {
     setRouteTrigger(!routeTrigger)
   }
 
-  const updateFavList = (newTopic) => {
+  const updateFavList = (newReview) => {
 
   }
 

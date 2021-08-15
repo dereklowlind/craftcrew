@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
         display: "block",
         textAlign: "left"
     },
-    resourceContainer: {
+    reviewContainer: {
         // display: "flex",
         marginTop: '10px',
         borderTop: '1px solid #B9B9B9',
@@ -42,13 +42,13 @@ const useStyles = makeStyles((theme) => ({
         padding:'17px',
         fontColor: '#696969',
     },
-    resourceTitle:{
+    reviewTitle:{
         fontFamily: 'Circular Std',
         fontStyle: 'normal',
         fontWeight: 'bold',
         fontSize: '25px'
     },
-    resourceDesc:{
+    reviewDesc:{
         fontFamily: 'Arial',
         fontStyle: 'normal',
         fontWeight: 'normal',
@@ -61,14 +61,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 function ReviewList(props){  
-    const [open, setOpen] = useState(false); 
+    // const [open, setOpen] = useState(false); 
     const [user, loading, error] = useAuthState(firebase.auth())
     const classes = useStyles()
     
-    const handleTopicDelete = (id, title) => {
+    const handleReviewDelete = (id, title) => {
         const proceed = window.confirm("Delete your review: " + title + "?")
         if(proceed) {
-            props.deleteTopic(id)
+            props.deleteReview(id)
         } else {
             console.log("cancelled")
         }
@@ -79,12 +79,12 @@ function ReviewList(props){
     }
 
     
-    // console.log("in showtopictable", props.topics);
-    if(props.topics === []){
-        return <div>No topics found</div>
+    // console.log("in showreviewtable", props.reviews);
+    if(props.reviews === []){
+        return <div>No reviews found</div>
     }
 
-    function Topic({topic, index}) {
+    function Review({review, index}) {
         let userUid;
         if(user !== null){
             userUid = user.uid;
@@ -93,17 +93,17 @@ function ReviewList(props){
         }
 
         return(
-            <Draggable draggableId={topic.docId} index={index} isDragDisabled={!props.isSignedIn}>
+            <Draggable draggableId={review.docId} index={index} isDragDisabled={!props.isSignedIn}>
                 {provided => (
-                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={classes.resourceContainer}>
+                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className={classes.reviewContainer}>
                                 {/* <DragIndicatorIcon fontSize="inherit" style={{colour: "#E5E5E5"}}/> */}
-                                <div>{topic.creatorName.split(" ")[0]}</div>
-                                <Rating name="review stars" value={topic.reviewStars} readOnly  />
-                                <div className={classes.resourceTitle}>{topic.title}</div>
-                                <div className={classes.resourceDesc}>{topic.desc}</div>
+                                <div>{review.creatorName.split(" ")[0]}</div>
+                                <Rating name="review stars" value={review.reviewStars} readOnly  />
+                                <div className={classes.reviewTitle}>{review.title}</div>
+                                <div className={classes.reviewDesc}>{review.desc}</div>
                                 <div>
-                                    {topic.creatorID == userUid &&
-                                        <Button variant='outlined'color='secondary' className={classes.deleteButton} onClick={() => {handleTopicDelete(topic.docId, topic.title)}}>
+                                    {review.creatorID == userUid &&
+                                        <Button variant='outlined'color='secondary' className={classes.deleteButton} onClick={() => {handleReviewDelete(review.docId, review.title)}}>
                                             Delete
                                         </Button> 
                                     }
@@ -115,8 +115,8 @@ function ReviewList(props){
         )
     }
 
-    const accordianList = props.topics.map((topic, index) => (
-        <Topic topic={topic} key={index} index={index}/>
+    const accordianList = props.reviews.map((review, index) => (
+        <Review review={review} key={index} index={index}/>
     ))
     
     return(
