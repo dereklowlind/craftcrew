@@ -146,7 +146,7 @@ function DrawerMenu(props) {
                 <Button variant="outlined" onClick={() => firebase.auth().signOut()}>Sign-out</Button>
               </div>
             }
-            <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>My Drinks is where you bookmark your favourite drinks</div>} 
+            <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>bookmark your favourite drinks</div>} 
               placement="right" arrow
             >
               <div className={classes.favListHeader}>📜 &nbsp; &nbsp; Bookmarks</div>
@@ -157,9 +157,9 @@ function DrawerMenu(props) {
               </div>
             }
             {props.favList.map((c, index) => (
-              <div key={c.courseId}>
-                <Link className={classes.favListButton} to={`/drink/${c.courseId}`}>
-                &nbsp; &nbsp; {c.courseTitle} &nbsp; &nbsp;
+              <div key={c.drinkId}>
+                <Link className={classes.favListButton} to={`/drink/${c.drinkId}`}>
+                &nbsp; &nbsp; {c.brand + ": " + c.name} &nbsp; &nbsp;
                 </Link>
               </div>
             ))}

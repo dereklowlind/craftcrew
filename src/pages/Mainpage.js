@@ -56,10 +56,9 @@ function Mainpage(props){
   //state
   //const [drinks, setDrinks] = useState([]);
   const [open, setOpen] = useState(false);
-  const [courseTitle, setCourseTitle] = useState("")
+  const [name, setName] = useState("")
   const [courseSubject, setCourseSubject] = useState("N/A")
-  const [courseCode, setCourseCode] = useState("")
-  const [university, setUniversity] = useState("University of Victoria")
+  const [brand, setBrand] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(false)
   const [dialogEmpty, setDialogEmpty] = useState([false, false, false, false])
@@ -72,27 +71,15 @@ function Mainpage(props){
   const handleAdd = () => {
     setSubmitting(true)
 
-    if (courseCode === "" || university=== "" || courseTitle==="" || courseSubject==="") {
+    if (brand === "" ||  name==="" ) {
       const newEmpty = []
-      if (courseCode === "") {
+      if (brand === "") {
         newEmpty.push(true)
       } else {
         newEmpty.push(false)
       }
 
-      if (courseSubject === "") {
-        newEmpty.push(true)
-      } else {
-        newEmpty.push(false)
-      }
-
-      if (courseTitle === "") {
-        newEmpty.push(true)
-      } else {
-        newEmpty.push(false)
-      }
-
-      if (university === "") {
+      if (name === "") {
         newEmpty.push(true)
       } else {
         newEmpty.push(false)
@@ -115,20 +102,16 @@ function Mainpage(props){
         // upload data to firestore database
         newListRef.set({
           datetime: new Date(),
-          title: courseCode,
-          university: university,
-          description: courseTitle,
-          subject: courseSubject,
+          brand: brand,
+          name: name,
           creatorId: user.uid,
           creatorName: user.displayName,
           photoUrl: url,
         })
         .then(function() {
-          props.setRecentTitle(courseCode)
-          setCourseTitle("");
-          setCourseSubject("");
-          setUniversity("");
-          setCourseCode("");
+          props.setRecentTitle(brand)
+          setName("");
+          setBrand("");
           setImgSrc(null);
           setOpen(false)
           setSubmitting(false)
@@ -195,50 +178,27 @@ function Mainpage(props){
           id="code"
           label="Brand"
           fullWidth
-          value={courseCode}
+          value={brand}
           placeholder="eg. Philips"
-          onChange={(e) => setCourseCode(e.target.value)}
+          onChange={(e) => setBrand(e.target.value)}
         />
-        {/* Should be autocomplete when we have a list of valid subjects */}
-        {/* <TextField
-          margin="dense"
-          error={dialogEmpty[1]}
-          id="subject"
-          label="Course Subject"
-          fullWidth
-          value={courseSubject}
-          placeholder="eg. Math"
-          onChange={(e) => setCourseSubject(e.target.value)}
-        /> */}
         <TextField
           margin="dense"
-          id="title"
+          id="name"
           error={dialogEmpty[2]}
           label="Name of Drink"
           fullWidth
-          value={courseTitle}
+          value={name}
           placeholder="eg. Blue buck"
-          onChange={(e) => setCourseTitle(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
-        {/* <TextField
-          margin="dense"
-          id="university"
-          error={dialogEmpty[3]}
-          label="University"
-          fullWidth
-          value={university}
-          placeholder="eg. University of Victoria"
-          onChange={(e) => setUniversity(e.target.value)}
-        /> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={(e) => {
               setOpen(false);
               setDialogEmpty([false, false, false, false])
-              setCourseTitle("");
-              setCourseSubject("");
-              setUniversity("");
-              setCourseCode("");
+              setName("");
+              setBrand("");
           }} color="primary">
               Cancel
         </Button>
