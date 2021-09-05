@@ -4,17 +4,17 @@ import 'firebase/firestore';
 import {Button, TextField, Tooltip} from '@material-ui/core'
 import {makeStyles} from '@material-ui/core/styles'
 import Rating from '@material-ui/lab/Rating';
-import TopicList from '../molecules/TopicList'
+import ReviewList from '../molecules/ReviewList'
 import BookmarkIcon from '@material-ui/icons/Bookmark'
 import BookmarkBorderIcon from '@material-ui/icons/BookmarkBorder';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {useAuthState} from 'react-firebase-hooks/auth'
 import {Link} from 'react-router-dom'
-import '../css/coursepage.scss'
+import '../css/drinkpage.scss'
 
 
 const useStyles = makeStyles((theme) => ({
-  topicTitleTextArea: {
+  reviewTitleTextArea: {
     width: '400px',
     [theme.breakpoints.down('sm')]: {width: '80%'}
   },
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "'Montserrat', sans-serif",
     fontWeight: 600
   },
-  topicDescTextArea: {
+  reviewDescTextArea: {
     width: '400px',
     [theme.breakpoints.down('sm')]: {width: '80%'}
   },
@@ -45,17 +45,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-function newTopic(db, title, desc, docId, numTopics, user, commentStars){
-  console.log(numTopics)
-    db.collection(`Lists/${docId}/topics`).add({
+function newReview(db, title, desc, docId, numReview, user, reviewStars){
+  console.log(numReview)
+    db.collection(`Drinks/${docId}/reviews`).add({
       datetime: new Date(),
       title: title,
       desc: desc,
-      resources: [],
-      position: numTopics,
+      position: numReview,
       creatorId: user.uid,
       creatorName: user.displayName,
-      commentStars: commentStars
+      reviewStars: reviewStars
     })
     .then(function() {
       console.log("Document successfully written!");
@@ -65,24 +64,6 @@ function newTopic(db, title, desc, docId, numTopics, user, commentStars){
     });
   }
 
-// function newResource(db, docId, topic, title, description, url, creatorID, creatorName){
-//   db.collection(`Lists/${docId}/topics`).doc(topic).update({
-//     resources: firebase.firestore.FieldValue.arrayUnion({
-//       datetime: new Date(),
-//       title: title,
-//       description: description,
-//       url: url,
-//       creatorID: creatorID,
-//       creatorName: creatorName 
-//     })
-//   })
-//   .then(function() {
-//     console.log("Document successfully written!");
-//   })
-//   .catch(function(error) {
-//       console.error("Error adding document: ", error);
-//   });
-// }
   
 function addToFavList(db, courseId, courseTitle, props){
 
@@ -141,14 +122,14 @@ function sortField(list) {
 
 // function updatePositions(db, rows, id) {
 
-//   db.collection("Lists").doc(id).set({
+//   db.collection("Drinks").doc(id).set({
 //     useForcedOrder: true
 //   }, {merge: true})
 
 //   for(var i = 0; i < rows.length; i++) {
 //     console.log(rows[i].docId)
 //     console.log(rows[i].title)
-//     db.collection("Lists").doc(id).collection("topics").doc(rows[i].docId).set({
+//     db.collection("Drinks").doc(id).collection("reviews").doc(rows[i].docId).set({
 //       position: i
 //     }, {merge: true}).catch(function(error) {
 //       console.log("Error setting new positions.")
@@ -156,31 +137,31 @@ function sortField(list) {
 //   }
 // }
 
-function autoSave(db, topics, id) {
-  db.collection("Lists").doc(id).set({
+function autoSave(db, reviews, id) {
+  db.collection("Drinks").doc(id).set({
     useForcedOrder: true
   }, {merge: true})
 
-  for(var i = 0; i < topics.length; i++) {
-    console.log(topics[i].docId)
-    console.log(topics[i].title)
-    db.collection("Lists").doc(id).collection("topics").doc(topics[i].docId).set({
-      position: (topics.length - i - 1)
+  for(var i = 0; i < reviews.length; i++) {
+    console.log(reviews[i].docId)
+    console.log(reviews[i].title)
+    db.collection("Drinks").doc(id).collection("reviews").doc(reviews[i].docId).set({
+      position: (reviews.length - i - 1)
     }, {merge: true}).catch(function(error) {
       console.log("Error setting new positions.")
     })
   }
 }
 
-function CoursePage(props){
+function DrinkPage(props){
     const db = props.db;
     const [photoUrl, setPhotoUrl] = useState("");
     const [courseTitle, setCoursetitle] = useState("")
     const [courseSubtitle, setCourseSubtitle] = useState("")
     const [pageLoading, setLoading] = useState(true)
-    const [topics, setTopics] = useState([]);
-    const [topicTitle, setTopicTitle] = useState("");
-    const [topicDesc, setTopicDesc] = useState("");
+    const [reviews, setReviews] = useState([]);
+    const [reviewTitle, setReviewTitle] = useState("");
+    const [reviewDesc, setReviewDesc] = useState("");
     const [updated, setUpdated] = useState(false)
     const [maxError, setMaxError] = useState(false)
     const [favorite, setFavorite] = useState(false)
@@ -188,12 +169,12 @@ function CoursePage(props){
     const [user, loading, error] = useAuthState(firebase.auth())
     const [forceOrder, setForceOrder] = (useState(false))
     const [docError, setDocError] = useState("none")
-    const [commentStars, setCommentStars] = useState(null);
+    const [reviewStars, setReviewStars] = useState(null);
     const classes = useStyles()
 
     useEffect(() => {
       console.log("saving!")
-      autoSave(props.db, topics, props.id)
+      autoSave(props.db, reviews, props.id)
     }, [updated])
 
     useEffect(() => {
@@ -210,7 +191,7 @@ function CoursePage(props){
     }, [props.favList])
 
     useEffect(() => {      
-      db.collection('Lists').doc(props.id).get().then(function(doc) {
+      db.collection('Drinks').doc(props.id).get().then(function(doc) {
         const docData = doc.data()
         if (docData.title == undefined) {
           setDocError("notFound")
@@ -233,7 +214,7 @@ function CoursePage(props){
         }
         
         if(docError=="none") {
-          db.collection(`Lists/${props.id}/topics`).onSnapshot((dataEntries) => {
+          db.collection(`Drinks/${props.id}/reviews`).onSnapshot((dataEntries) => {
             let rows = []
             dataEntries.forEach(doc => {
               const timeStamp = doc.data().datetime.toDate().toString()
@@ -246,14 +227,14 @@ function CoursePage(props){
                 position: doc.data().position,
                 creatorID: doc.data().creatorId,
                 creatorName: doc.data().creatorName,
-                commentStars: doc.data().commentStars
+                reviewStars: doc.data().reviewStars
               })
             }); // data entries for each
             if(rows.length > 1) {
                 rows = sortField(rows)
             }
             
-            setTopics(rows);
+            setReviews(rows);
             setLoading(false);
           });
         }
@@ -262,7 +243,7 @@ function CoursePage(props){
         setDocError("notFound")
         setLoading(false)
       })
-       // db collect topics
+       // db collect reviews
     }, [props.id]); // when id in link /courses/:id changes it causes a "reload" of the page
 
     const getContent = (id) => {
@@ -274,12 +255,14 @@ function CoursePage(props){
       if(proceed) {
         setLoading(true)
         removeFromFavList(db, "", props)
-        db.collection('Lists').doc(props.id).collection('topics').get().then(function(querySnapshot) {
+        // db.collection('Drinks').doc(props.id).collection('reviews').get().then(function(querySnapshot) {
+        db.collection(`Drinks/${props.id}/reviews`).get().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
             doc.ref.delete()
           })
         })
-        db.collection('Lists').doc(props.id).delete().then(function(){
+        db.collection('Drinks').doc(props.id).delete().then(function(){
+        // db.collection(`Drinks/${props.id}`).delete().then(function(){
           console.log("Delete success.")
           setDocError("deleted")
           setLoading(false)
@@ -289,38 +272,15 @@ function CoursePage(props){
       }
     }
 
-    const deleteTopic = (id) => {
+    const deleteReview = (id) => {
       
-      const newList = topics.filter((element) => {
+      const newList = reviews.filter((element) => {
         return element.id != id
       })
-      setTopics(newList)
+      setReviews(newList)
 
-      db.collection('Lists').doc(props.id).collection('topics').doc(id).delete()
-
-    }
-
-    const deleteResource = (resource, topicID) => {
-      console.log(resource)
-      const newList = topics.filter((element) => {
-        return element.resources.title != resource.title
-      })
-      setTopics(newList)
-      db.collection('Lists').doc(props.id).collection('topics').doc(topicID).update({
-        "resources": firebase.firestore.FieldValue.arrayRemove(
-          {
-            "creatorID": resource.creatorID,
-            "creatorName": resource.creatorName,
-            "datetime": resource.datetime,
-            "description": resource.description,
-            "title": resource.title,
-            "url": resource.url
-          }
-        )
-      }).catch((error)=>{
-        console.log(error)
-        
-      })
+      // db.collection('Drinks').doc(props.id).collection('reviews').doc(id).delete()
+      db.collection(`Drinks/${props.id}/reviews`).doc(id).delete()
 
     }
 
@@ -332,13 +292,13 @@ function CoursePage(props){
         return
       }
 
-      if (topicTitle === "") {
+      if (reviewTitle === "") {
         setMaxError(true)
         return
       }
-      newTopic(db, topicTitle, topicDesc, props.id, topics.length, user, commentStars);
-      setTopicTitle("");
-      setCommentStars(null);
+      newReview(db, reviewTitle, reviewDesc, props.id, reviews.length, user, reviewStars);
+      setReviewTitle("");
+      setReviewStars(null);
       setMaxError(false)
     }
 
@@ -368,12 +328,12 @@ function CoursePage(props){
       setForceOrder(true)
 
       const rows = reorder(
-        topics,
+        reviews,
         result.source.index,
         result.destination.index
       );
 
-      setTopics(rows);
+      setReviews(rows);
       setUpdated(!updated);
       //putting this function here breaks dnd, so maybe just let it end
       // updatePositions(props.db, rows, props.id)
@@ -409,13 +369,13 @@ function CoursePage(props){
 
     if(docError=="notFound") {
       return (
-        <div className="coursePage">
-          <div className="courseHeader">
-            <div className="courseTitles">
-              <div className="courseTitle">
+        <div className="drinkPage">
+          <div className="drinkHeader">
+            <div className="drinkTitles">
+              <div className="drinkTitle">
                 {"404 Not Found"}
               </div>
-              <div className="courseSubtitle">
+              <div className="drinkSubtitle">
                 {"We couldn't find what you were looking for, or it doesn't exist!"}
               </div>
             </div>
@@ -424,13 +384,13 @@ function CoursePage(props){
       )
     } else if (docError=="deleted") {
       return(
-        <div className="coursePage">
-          <div className="courseHeader">
-            <div className="courseTitles">
-              <div className="courseTitle">
+        <div className="drinkPage">
+          <div className="drinkHeader">
+            <div className="drinkTitles">
+              <div className="drinkTitle">
                 {"Resource deleted"}
               </div>
-              <div className="courseSubtitle">
+              <div className="drinkSubtitle">
                 <Link to="/">
                   Back to Home
                 </Link>
@@ -451,14 +411,14 @@ function CoursePage(props){
         )
         :
         (
-          <div className="coursePage">
+          <div className="drinkPage">
             
-            <div className="courseHeader">
-              <div className="courseTitles">
-                <div className="courseTitle">
+            <div className="drinkHeader">
+              <div className="drinkTitles">
+                <div className="drinkTitle">
                   {courseTitle}
                 </div>
-                <div className="courseSubtitle">
+                <div className="drinkSubtitle">
                   {courseSubtitle}
                 </div>
               </div>
@@ -487,14 +447,14 @@ function CoursePage(props){
               
             </div>
             <img src={photoUrl} />
-          <div className="courseButtons">
-            <form onSubmit={handleSubmit} className="courseButtons">
-            <Rating name="comment stars" value={commentStars} onChange={(event, value) => { setCommentStars(value)}}  />
+          <div className="drinkButtons">
+            <form onSubmit={handleSubmit} className="drinkButtons">
+            <Rating name="review stars" value={reviewStars} onChange={(event, value) => { setReviewStars(value)}}  />
               <TextField 
-                placeholder="Comment Title" 
+                placeholder="Review Title" 
                 error={maxError}
-                className={classes.topicTitleTextArea} 
-                value={topicTitle} 
+                className={classes.reviewTitleTextArea} 
+                value={reviewTitle} 
                 InputProps={{
                   classes: {
                     input: classes.textTitleAreaFont
@@ -505,16 +465,16 @@ function CoursePage(props){
                     setMaxError(true)
                   } else if (maxError) {
                     setMaxError(false)
-                    setTopicTitle(e.target.value)
+                    setReviewTitle(e.target.value)
                   } else {
-                    setTopicTitle(e.target.value)
+                    setReviewTitle(e.target.value)
                   }
                 }}/>
                 <TextField 
-                placeholder="Comment Description" 
+                placeholder="Review Description" 
                 error={maxError}
-                className={classes.topicDescTextArea} 
-                value={topicDesc} 
+                className={classes.reviewDescTextArea} 
+                value={reviewDesc} 
                 InputProps={{
                   classes: {
                     input: classes.textDescAreaFont
@@ -525,14 +485,14 @@ function CoursePage(props){
                     setMaxError(true)
                   } else if (maxError) {
                     setMaxError(false)
-                    setTopicDesc(e.target.value)
+                    setReviewDesc(e.target.value)
                   } else {
-                    setTopicDesc(e.target.value)
+                    setReviewDesc(e.target.value)
                   }
                 }}/>
               <Button variant="outlined" type='submit'
                 // style={{marginLeft: '2px'}}
-              >Add Comment</Button>
+              >Add Review</Button>
               {user &&
               <div>
                 {(user.uid === courseOwner) &&
@@ -545,16 +505,14 @@ function CoursePage(props){
             </form>
           </div>
 
-          <TopicList 
+          <ReviewList 
             db={db} 
-            topics={topics} 
+            reviews={reviews} 
             isSignedIn={props.isSignedIn}
             setOpenSigninDialog={props.setOpenSigninDialog}
-            // newResource={newResource}
-            deleteResource={deleteResource}
-            deleteTopic={deleteTopic}
+            deleteReview={deleteReview}
             docId={props.id} 
-            switchTopic={getContent}
+            // switchTopic={getContent}
             onDragEnd={onDragEnd}
           />
         </div>
@@ -565,4 +523,4 @@ function CoursePage(props){
 }
 
 
-export default CoursePage
+export default DrinkPage

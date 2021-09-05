@@ -146,7 +146,7 @@ function DrawerMenu(props) {
                 <Button variant="outlined" onClick={() => firebase.auth().signOut()}>Sign-out</Button>
               </div>
             }
-            <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>My Lists is where you bookmark your favourite lists</div>} 
+            <Tooltip title={<div style={{fontSize: "20px", padding: "5px"}}>My Drinks is where you bookmark your favourite drinks</div>} 
               placement="right" arrow
             >
               <div className={classes.favListHeader}>📜 &nbsp; &nbsp; Bookmarks</div>

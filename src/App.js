@@ -1,15 +1,14 @@
 import './App.css'
 import Mainpage from './pages/Mainpage'
-import CoursePage from './pages/CoursePage'
+import DrinkPage from './pages/DrinkPage'
 import HeaderBar from './molecules/HeaderBar'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
-// import DrawerMenu from './molecules/DrawerMenu'
 import Helmet from 'react-helmet'
 import firebase from 'firebase'
 import 'firebase/firestore';
 import { useEffect, useState, useCallback, useRef } from 'react'
 // import ReactGA from 'react-ga';
-// import Auth from './molecules/Auth'
+
 
 // dev
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -48,18 +47,18 @@ function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [openSigninDialog, setOpenSigninDialog] = useState(false);
   const [favList, setFavList] = useState([]);
-  const [lists, setLists] = useState([]);
+  const [drinks, setDrinks] = useState([]);
   const [submitSuccess, setSubmitSuccess] = useState(false)
   const [recentTitle, setRecentTitle] = useState("")
   const [recentId, setRecentId] = useState("")
   const [routeTrigger, setRouteTrigger] = useState(false)
-  const [courseListLoading, setCourseListLoading] = useState(true)
-  // const [imgSrc, setImgSrc] = useState(null);
+  const [drinksLoading, setDrinksLoading] = useState(true)
+
 
   
   //on component mount
   useEffect(() => {
-    db.collection("Lists").onSnapshot((dataEntries) => {
+    db.collection("Drinks").onSnapshot((dataEntries) => {
       let rows = []
       dataEntries.forEach(doc => {
         if(doc.data().title === undefined) {
@@ -78,8 +77,8 @@ function App() {
       rows.sort(function(a, b) {
         return (a.title < b.title) ? -1 : 1
       })
-      setLists(rows);
-      setCourseListLoading(false)
+      setDrinks(rows);
+      setDrinksLoading(false)
     });
   }, [submitSuccess]);
 
@@ -87,7 +86,7 @@ function App() {
     setRouteTrigger(!routeTrigger)
   }
 
-  const updateFavList = (newTopic) => {
+  const updateFavList = (newReview) => {
 
   }
 
@@ -99,15 +98,14 @@ function App() {
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
       </Helmet>
       <Router>
-        <HeaderBar lists={lists} triggerRender={triggerRender} db={db} favList={favList} setFavList={setFavList}
+        <HeaderBar drinks={drinks} triggerRender={triggerRender} db={db} favList={favList} setFavList={setFavList}
           isSignedIn={isSignedIn} setIsSignedIn={setIsSignedIn}
           openSigninDialog={openSigninDialog} setOpenSigninDialog={setOpenSigninDialog}
         />
         <div className="pageContainer">
-        {/* <DrawerMenu favList={favList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/> */}
             <Switch>
-              <Route path="/drink/:id" render={({ match }) => <CoursePage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>} /> 
-              <Route path="/" render={(props) => (<Mainpage db={db} storage={storage} lists={lists} favList={favList} updateFavList={updateFavList} coursesLoading={courseListLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>
+              <Route path="/drink/:id" render={({ match }) => <DrinkPage id={match.params.id} favList={favList} db={db} key={window.location.pathname} setFavList={setFavList} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>} /> 
+              <Route path="/" render={(props) => (<Mainpage db={db} storage={storage} drinks={drinks} favList={favList} updateFavList={updateFavList} drinksLoading={drinksLoading} submitSuccess={submitSuccess} setSubmitSuccess={setSubmitSuccess} setRecentTitle={setRecentTitle} recentTitle={recentTitle} recentId={recentId} isSignedIn={isSignedIn} setOpenSigninDialog={setOpenSigninDialog}/>)}/>
             </Switch>
             
         </div>

@@ -6,7 +6,7 @@ import {Button, Dialog, DialogContent, DialogContentText,
   CircularProgress, IconButton, Snackbar} 
 from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
-import CourseSearch from '../molecules/CourseSearch'
+import DrinkSearch from '../molecules/DrinkSearch'
 import { useHistory } from 'react-router-dom'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
 import {useAuthState} from 'react-firebase-hooks/auth'
@@ -54,7 +54,7 @@ function Mainpage(props){
   const storage = props.storage;
   let history = useHistory()
   //state
-  //const [lists, setLists] = useState([]);
+  //const [drinks, setDrinks] = useState([]);
   const [open, setOpen] = useState(false);
   const [courseTitle, setCourseTitle] = useState("")
   const [courseSubject, setCourseSubject] = useState("N/A")
@@ -101,7 +101,7 @@ function Mainpage(props){
       setDialogEmpty(newEmpty)
       return
     }
-    const newListRef = db.collection("Lists").doc();
+    const newListRef = db.collection("Drinks").doc();
     const photoPathRef = storage.ref(`publicImages/${newListRef.id}/mainPic.jpg`);
     
 
@@ -286,7 +286,7 @@ function Mainpage(props){
           </div>
           <div className="commandSection">
               <div>
-              {(!props.coursesLoading) &&
+              {(!props.drinksLoading) &&
                 <div>
                   {/* <Button className={classes.newCourseButton}
                   onClick={() => setOpen(true)}
@@ -311,7 +311,7 @@ function Mainpage(props){
               </div>
           </div>
           <div className="courseSection">
-            {props.coursesLoading ? 
+            {props.drinksLoading ? 
             (
               <div>
                 <CircularProgress size={60}/>
@@ -319,7 +319,7 @@ function Mainpage(props){
             )
             :
             (
-              <CourseSearch lists={props.lists} />
+              <DrinkSearch drinks={props.drinks} />
             )
             }
             
