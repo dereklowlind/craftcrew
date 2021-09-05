@@ -61,21 +61,21 @@ function App() {
     db.collection("Drinks").onSnapshot((dataEntries) => {
       let rows = []
       dataEntries.forEach(doc => {
-        if(doc.data().title === undefined) {
+        if(doc.data().brand === undefined) {
           return
         }
-        if(doc.data().title === recentTitle) {
+        if(doc.data().brand === recentTitle) {
           setRecentId(doc.id)
         }
         rows.push({
           docId: doc.id,
-          title: doc.data().title,
-          subtitle: doc.data().description
+          brand: doc.data().brand,
+          name: doc.data().name
         })
       })
       
       rows.sort(function(a, b) {
-        return (a.title < b.title) ? -1 : 1
+        return (a.brand < b.brand) ? -1 : 1
       })
       setDrinks(rows);
       setDrinksLoading(false)

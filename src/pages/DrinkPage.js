@@ -65,19 +65,21 @@ function newReview(db, title, desc, docId, numReview, user, reviewStars){
   }
 
   
-function addToFavList(db, courseId, courseTitle, props){
+function addToFavList(db, drinkId, drinkBrand, drinkName, props){
 
   db.collection(`UserList`).doc(firebase.auth().currentUser.uid).collection('favouritesList').add({
-    courseId: props.id,
-    courseTitle: courseTitle,
+    drinkId: props.id,
+    brand: drinkBrand,
+    name: drinkName,
     datetime: new Date()
   })
   .then(function() {
     const newList = [...props.favList]
     const insert = {
       datetime: new Date(),
-      courseId: courseId,
-      courseTitle: courseTitle
+      drinkId: drinkId,
+      brand: drinkBrand,
+      name: drinkName,
     }
     newList.push(insert)
     props.setFavList(newList)
@@ -88,12 +90,12 @@ function addToFavList(db, courseId, courseTitle, props){
   });
 }
 
-function removeFromFavList(db, courseTitle, props) {
+function removeFromFavList(db, props) {
 
   //delete from db, needs error handling
-  var deleteCourseQuery = db.collection(`UserList/${firebase.auth().currentUser.uid}/favouritesList`).where('courseId', '==', props.id)
+  var deleteDrinkQuery = db.collection(`UserList/${firebase.auth().currentUser.uid}/favouritesList`).where('drinkId', '==', props.id)
   
-  deleteCourseQuery.get().then(function(querySnapshot) {
+  deleteDrinkQuery.get().then(function(querySnapshot) {
     querySnapshot.forEach(function(doc) {
       doc.ref.delete()
     })
@@ -101,7 +103,7 @@ function removeFromFavList(db, courseTitle, props) {
 
   //delete locally without having to reload the page
   var newList = [...props.favList]
-  newList = newList.filter(element => element.courseId!==props.id)
+  newList = newList.filter(element => element.drinkId!==props.id)
   props.setFavList(newList)
 
 }
@@ -156,8 +158,8 @@ function autoSave(db, reviews, id) {
 function DrinkPage(props){
     const db = props.db;
     const [photoUrl, setPhotoUrl] = useState("");
-    const [courseTitle, setCoursetitle] = useState("")
-    const [courseSubtitle, setCourseSubtitle] = useState("")
+    const [drinkBrand, setDrinkBrand] = useState("")
+    const [drinkName, setDrinkName] = useState("")
     const [pageLoading, setLoading] = useState(true)
     const [reviews, setReviews] = useState([]);
     const [reviewTitle, setReviewTitle] = useState("");
@@ -181,7 +183,7 @@ function DrinkPage(props){
       if (!favorite) {
         if (props.favList.length > 0) {
           for(var i = 0; i < props.favList.length; i++) {
-            if (props.favList[i].courseId === props.id) {
+            if (props.favList[i].drinkId === props.id) {
               setFavorite(true)
               break
             }
@@ -193,16 +195,16 @@ function DrinkPage(props){
     useEffect(() => {      
       db.collection('Drinks').doc(props.id).get().then(function(doc) {
         const docData = doc.data()
-        if (docData.title == undefined) {
+        if (docData.brand == undefined) {
           setDocError("notFound")
         }
         if(docData.photoUrl) {
           setPhotoUrl(docData.photoUrl)
         }
-        setCoursetitle(docData.title)
+        setDrinkBrand(docData.brand)
         setCourseOwner(docData.creatorId)
-        if(docData.description) {
-          setCourseSubtitle(docData.description)
+        if(docData.name) {
+          setDrinkName(docData.name)
         }
 
         console.log(docData.useForcedOrder)
@@ -254,7 +256,7 @@ function DrinkPage(props){
       const proceed = openConfirmation();
       if(proceed) {
         setLoading(true)
-        removeFromFavList(db, "", props)
+        removeFromFavList(db, props)
         // db.collection('Drinks').doc(props.id).collection('reviews').get().then(function(querySnapshot) {
         db.collection(`Drinks/${props.id}/reviews`).get().then(function(querySnapshot) {
           querySnapshot.forEach(function(doc) {
@@ -298,6 +300,7 @@ function DrinkPage(props){
       }
       newReview(db, reviewTitle, reviewDesc, props.id, reviews.length, user, reviewStars);
       setReviewTitle("");
+      setReviewDesc("");
       setReviewStars(null);
       setMaxError(false)
     }
@@ -345,7 +348,7 @@ function DrinkPage(props){
         if(favorite) {
           alert("Already in favorites list!")
         } else {
-          addToFavList(db, props.id, courseTitle, props)
+          addToFavList(db, props.id, drinkBrand, drinkName, props)
         }
       }else{
         alert("please sign in to add to favourites")
@@ -355,7 +358,7 @@ function DrinkPage(props){
     const handleRemoveFromFavList = () => {
       if(firebase.auth().currentUser) {
         if (favorite) {
-          removeFromFavList(db, courseTitle, props)
+          removeFromFavList(db, props)
           setFavorite(false)
         } else {
           alert("this is not a favorite")
@@ -416,10 +419,10 @@ function DrinkPage(props){
             <div className="drinkHeader">
               <div className="drinkTitles">
                 <div className="drinkTitle">
-                  {courseTitle}
+                  {drinkBrand}
                 </div>
                 <div className="drinkSubtitle">
-                  {courseSubtitle}
+                  {drinkName}
                 </div>
               </div>
 
